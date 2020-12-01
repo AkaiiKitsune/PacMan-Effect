@@ -403,4 +403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6900c7997afde034abdc7980dd35b3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 9125470665958773380, guid: 2435bec4ca6208548afa35aff899a6e0, type: 3}
+  _prefab: {fileID: 9125470665958773380, guid: 2435bec4ca6208548afa35aff899a6e0, type: 3}
+  _maps: {fileID: 4900000, guid: 7eca7fbb445063c419435d8f775ac600, type: 3}
+  _mapContent: 
