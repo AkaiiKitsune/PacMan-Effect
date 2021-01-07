@@ -4,29 +4,108 @@ using UnityEngine;
 
 public class LevelParser : MonoBehaviour
 {
-    [SerializeField] private GameObject _prefab;
+    [Header("Constants")]
+    private const int mapWidth = 28;
+    private const int mapHeight = 31;
+
+    [Header("Map")]
+    public TileObject[,] mapMatrix = new TileObject[mapWidth, mapHeight];
+    private char[] _mapContentString = null;
     [SerializeField] private TextAsset _maps;
-    [SerializeField] private char[] _mapContent = null;
-    [SerializeField] private float _scale = 10;
 
-    private const int _mapWidth = 28;
-    private const int _mapHeight = 31;
+    [Header("Blocks")]
+    public List<Transform> listBlocks = new List<Transform>(5);
 
-    private int _mapIndex = 0;
-
-    // Start is called before the first frame update
-    void Start()
+    //Debug functions
+    [ContextMenu("Dump MapMatrix To Text")]
+    void DumpMapMatrixToText()
     {
-        _mapContent = _maps.text.ToCharArray();
-
-        for (int i = 0; i < _mapContent.Length; i++)
+        using (System.IO.TextWriter tw = new System.IO.StreamWriter("mapMatrix.txt"))
         {
-            if (_mapContent[i] == '|')
+            for (int j = 0; j < mapHeight; j++)
             {
-                GameObject temp = Instantiate(_prefab, this.transform);
-                Vector3 pos = new Vector3((i % _mapWidth) - ((_prefab.transform.localScale.x*_scale*_mapWidth) / 2 - _prefab.transform.localScale.x*_scale/2), (int)-(i / _mapWidth) + ((_prefab.transform.localScale.y*_scale*_mapHeight)/2), 0);
-                temp.transform.localPosition += pos / _scale;
+                for (int i = 0; i < mapWidth; i++)
+                {
+                    string UDLR = null;
+                    if (j > 0) UDLR += mapMatrix[i, j].neighbourUp.index.ToString().PadRight(3, '-'); else UDLR += "nul";
+                    UDLR += ",";
+                    if (j < mapHeight - 1) UDLR += mapMatrix[i, j].neighbourDown.index.ToString().PadRight(3, '-'); else UDLR += "nul";
+                    UDLR += ",";
+                    if (i > 0) UDLR += mapMatrix[i, j].neighbourLeft.index.ToString().PadRight(3, '-'); else UDLR += "nul"; ;
+                    UDLR += ",";
+                    if (i < mapWidth - 1) UDLR += mapMatrix[i, j].neighbourRight.index.ToString().PadRight(3, '-'); else UDLR += "nul"; ;
+                    tw.Write(mapMatrix[i, j].type.ToString().Substring(0, 1) + ":" + mapMatrix[i, j].index.ToString().PadRight(3, '-') + ";" + UDLR + " ");
+                }
+                tw.WriteLine();
             }
+        }
+    }
+
+    private void Awake()
+    {
+        //Initialising the map character array to be parsed
+        _mapContentString = _maps.text.ToCharArray();
+
+        //For each tile in the matrix...
+        for (int y = 0; y < mapHeight; y++)
+            for (int x = 0; x < mapWidth; x++)
+            {
+                //Create a tile
+                mapMatrix[x, y] = MakeTileObject(x, y);
+                //And set it's neighbours
+                SetTileNeighbour(x, y);
+            }
+    }
+
+    //Create the tiles in the matrix
+    private TileObject MakeTileObject(int x, int y)
+    {
+
+        int index = x + (y * mapWidth); //Get the current index in a more readable format, to display in the debug matrix
+        char currentChar = _mapContentString[index]; //Get the currently parsed character
+
+        TileType _type;
+
+        //Return a proper tiletype based on the current parsed character
+        switch (currentChar)
+        {
+            case '|':
+                _type = TileType.Wall;
+                break;
+
+            case '.':
+                _type = TileType.Ball;
+                break;
+
+            case 'o':
+                _type = TileType.Super;
+                break;
+
+            case '_':
+                _type = TileType.Outside;
+                break;
+
+            default:
+                _type = TileType.Air;
+                break;
+        }
+
+        return new TileObject(index, _type, listBlocks);
+    }
+
+    //Set each tile's 4 neighbours accordingly
+    private void SetTileNeighbour(int x, int y)
+    {
+        if (x > 0)
+        {
+            mapMatrix[x, y].neighbourLeft = mapMatrix[x - 1, y];
+            mapMatrix[x - 1, y].neighbourRight = mapMatrix[x, y];
+        }
+
+        if (y > 0)
+        {
+            mapMatrix[x, y].neighbourUp = mapMatrix[x, y - 1];
+            mapMatrix[x, y - 1].neighbourDown = mapMatrix[x, y];
         }
     }
 }
