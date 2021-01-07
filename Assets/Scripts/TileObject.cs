@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TileType { Wall, Ball, Super, Air, Outside }
+public enum TileType 
+{ 
+    Wall = 0, 
+    Ball = 1, 
+    Super = 2, 
+    Air = 3, 
+    Outside = 4 
+}
+
 public class TileObject
 {
     public TileType type;
@@ -27,6 +35,6 @@ public class TileObject
     }
     private void Init()
     {
-        currentBlock = listBlocks[0];
+        currentBlock = listBlocks[(int)type];
     }
 }
