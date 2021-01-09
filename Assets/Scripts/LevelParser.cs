@@ -26,6 +26,8 @@ public class LevelParser : MonoBehaviour
                 GameObject temp = Instantiate(_prefab, this.transform);
                 Vector3 pos = new Vector3((i % _mapWidth) - ((_prefab.transform.localScale.x*_scale*_mapWidth) / 2 - _prefab.transform.localScale.x*_scale/2), (int)-(i / _mapWidth) + ((_prefab.transform.localScale.y*_scale*_mapHeight)/2), 0);
                 temp.transform.localPosition += pos / _scale;
+
+                GetComponent<WallEffect>().SendGameObject(temp);
             }
         }
     }

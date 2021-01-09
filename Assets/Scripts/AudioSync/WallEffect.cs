@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class WallEffect : MonoBehaviour
 {
-    bool canBeTrigger = true;
+    [SerializeField] private List<GameObject> _wallObject = new List<GameObject>();
+    
+    //private int[] cpt = new int[8];
     // Start is called before the first frame update
     void Start()
     {
@@ -17,23 +19,40 @@ public class WallEffect : MonoBehaviour
         
     }
 
-    public void TriggerShineColor(int index)
+    public void SendGameObject(GameObject nouvMur)
     {
-        if ((index <= 30) && canBeTrigger)
+        _wallObject.Add(nouvMur);
+    }
+
+    public void TriggerShineColor(int _cptBPM)
+    {
+        int nb;
+        
+        if (_cptBPM % 8 == 0)
         {
-            GetComponent<ChangeMaterialProperties>().GoWhite();
-            canBeTrigger = false;
+            nb = 90;
+        }
+        else 
+        {
+            nb = 10;
+        }
+
+        
+        for (int i = 0 ; i < nb; i++)
+        {
+            _wallObject[Random.Range( 0, _wallObject.Count)].GetComponent<ChangeMaterialProperties>().GoWhite();
         }
     }
 
-    //Même chose que audessus
+    /*//Même chose que audessus
     public void TriggerResetColor(int index)
     {
-        if (index <= 30)
+        Debug.Log("Index : " + index);
+        Debug.Log("Taille de la list : " + _wallObject.Count);
+
+        for (int i = 0; i < _wallObject.Count; i++)
         {
-            canBeTrigger = true;
-        }else{ 
-            GetComponent<ChangeMaterialProperties>().ResetColor();
+            _wallObject[i].GetComponent<ChangeMaterialProperties>().ResetColor();
         }
-    }
+    }*/
 }

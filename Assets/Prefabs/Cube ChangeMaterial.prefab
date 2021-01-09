@@ -32,6 +32,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustGoWhite: 0
+  fadeSpeed: 0.015
 --- !u!1001 &4298704964057107088
 PrefabInstance:
   m_ObjectHideFlags: 0
