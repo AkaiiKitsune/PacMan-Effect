@@ -16,6 +16,9 @@ public class LevelParser : MonoBehaviour
     [Header("Blocks")]
     public List<Transform> listBlocks = new List<Transform>(5);
 
+    [Header("Pacman Spawn Tile")]
+    public Vector2 pacmanSpawn;
+
     //Debug functions
     [ContextMenu("Dump MapMatrix To Text")]
     void DumpMapMatrixToText()
@@ -55,6 +58,7 @@ public class LevelParser : MonoBehaviour
                 //And set it's neighbours
                 SetTileNeighbour(x, y);
             }
+        pacmanSpawn = FindPacmanSpawn(14, 16);
     }
 
     //Create the tiles in the matrix
@@ -108,4 +112,27 @@ public class LevelParser : MonoBehaviour
             mapMatrix[x, y - 1].neighbourDown = mapMatrix[x, y];
         }
     }
+
+    private Vector2 FindPacmanSpawn(int x, int y)
+    {
+        int count = 0;
+
+        while (count < 2)
+        {
+
+            if (mapMatrix[x, y].type == TileType.Air)
+            {
+                count++;
+                y++;
+            }
+
+            else
+            {
+                y++;
+            }
+        }
+        Vector2 m_spawn = new Vector2(x, y);
+        return m_spawn;
+    }
+
 }
