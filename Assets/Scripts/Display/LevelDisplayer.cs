@@ -17,7 +17,7 @@ public class LevelDisplayer : MonoBehaviour
     [Header("Settings")]
     public static float size = .7f;
 
-    private void Start()
+    public void DisplayLevel()
     {
         float tempx = origin.transform.position.x, tempy = this.transform.position.y;
         tempx -= (mapWidth / 2) * size;
