@@ -17,6 +17,7 @@ public class PacmanBehavior : MonoBehaviour
     [Header("Internal Logic")]
     [SerializeField] public Vector2 position;
     [SerializeField] public bool isAlive = true;
+    [SerializeField] private MoveDir lastDir;
 
     //Handle setting position at spawn time
     public void Spawn()
@@ -31,36 +32,55 @@ public class PacmanBehavior : MonoBehaviour
         switch (dir)
         {
             case MoveDir.Up:
-                if (level.mapMatrix[(int)position.x, (int)position.y - 1].type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].type != TileType.Outside)
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourUp.type != TileType.Outside) lastDir = dir;
+                break;
+            
+            case MoveDir.Down:
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourDown.type != TileType.Outside) lastDir = dir;
+                break;
+            
+            case MoveDir.Left:
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourLeft.type != TileType.Outside) lastDir = dir;
+                break;
+            
+            case MoveDir.Right:
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourRight.type != TileType.Outside) lastDir = dir;
+                break;
+        }
+
+        switch (lastDir)
+        {
+            case MoveDir.Up:
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourUp.type != TileType.Outside)
                 {
-                    level.mapMatrix[(int)position.x, (int)position.y - 1].type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
+                    level.mapMatrix[(int)position.x, (int)position.y].neighbourUp.type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
                     position.y -= 1;
                 }
                 UpdatePosition();
                 break;
 
             case MoveDir.Down:
-                if (level.mapMatrix[(int)position.x, (int)position.y + 1].type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y + 1].type != TileType.Outside)
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type != TileType.Outside)
                 {
-                    level.mapMatrix[(int)position.x, (int)position.y + 1].type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
+                    level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
                     position.y += 1;
                 }
                 UpdatePosition();
                 break;
 
             case MoveDir.Left:
-                if (level.mapMatrix[(int)position.x - 1, (int)position.y].type != TileType.Wall && level.mapMatrix[(int)position.x - 1, (int)position.y].type != TileType.Outside)
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type != TileType.Outside)
                 {
-                    level.mapMatrix[(int)position.x - 1, (int)position.y].type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
+                    level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
                     position.x -= 1;
                 }
                 UpdatePosition();
                 break;
 
             case MoveDir.Right:
-                if (level.mapMatrix[(int)position.x + 1, (int)position.y].type != TileType.Wall && level.mapMatrix[(int)position.x + 1, (int)position.y].type != TileType.Outside)
+                if (level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type != TileType.Outside)
                 {
-                    level.mapMatrix[(int)position.x + 1, (int)position.y].type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
+                    level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
                     position.x += 1;
                 }
                 UpdatePosition();
