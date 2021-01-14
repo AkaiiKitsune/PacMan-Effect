@@ -359,6 +359,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2014496531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014496533}
+  - component: {fileID: 2014496532}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &2014496532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014496531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d680f97139c35f14f9f5ef6b08999d7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: {fileID: 0}
+  target: {fileID: 0}
+  currentDir: 0
+  position: {x: 0, y: 0}
+  Spawned: 0
+  type: 0
+--- !u!4 &2014496533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014496531}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3300618, y: 0.050960448, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2029151644
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,15 +437,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b7599ce8648ef43af9c106c82c2e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeTillUpdate: 0.2
-  isGame: 0
+  timeTillUpdate: 0.3
+  timeTillSpawn: 4
   pacman: {fileID: 5802738516424366717, guid: 23d53111c36a1aa40ac46c6f124ed67f, type: 3}
+  ghostPrefabs:
+  - {fileID: 2678174848568332790, guid: 61c9d33c9ec35bb47aa29a738c7e044d, type: 3}
+  - {fileID: 3914003140405220502, guid: 15beb248ba234b645aa9d3d1ec5037df, type: 3}
+  - {fileID: 5708483009478894604, guid: 7db4feec9e478724193160b6b7783992, type: 3}
+  - {fileID: 1313333166086241664, guid: 978813e07d344b5439d21627c98f41bf, type: 3}
   defaultSpawn: 0
   levels:
   - {fileID: 2066316458}
   levelDisplayers:
   - {fileID: 2066316457}
   currDirection: 0
+  isGame: 0
 --- !u!4 &2029151646
 Transform:
   m_ObjectHideFlags: 0
@@ -469,7 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6900c7997afde034abdc7980dd35b3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maps: {fileID: 4900000, guid: e81abaa1ced5ef74d977157087fe8892, type: 3}
+  _maps: {fileID: 4900000, guid: 7eca7fbb445063c419435d8f775ac600, type: 3}
   listBlocks:
   - {fileID: 6479637942285292720, guid: 2435bec4ca6208548afa35aff899a6e0, type: 3}
   - {fileID: 4489306948269969096, guid: 0d112cbfe4d33c4428c6afe57800d91c, type: 3}

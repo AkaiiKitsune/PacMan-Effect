@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Settings")]
     public float timeTillUpdate = 0.5f;
-    [SerializeField] private bool isGame = false;
+    public float timeTillSpawn = 3f;
 
     [Header("Game Objects")]
     [SerializeField] private PacmanBehavior pacman;
+    [SerializeField] private List<GhostBehavior> ghostPrefabs;
 
     [Header("Levels")]
     [SerializeField] private int defaultSpawn = 0;
@@ -19,46 +21,49 @@ public class GameManager : MonoBehaviour
 
     [Header("Internal States")]
     [SerializeField] private MoveDir currDirection = MoveDir.Up;
-
-
-
-    // Static singleton instance
-    private static GameManager instance;
-
-    // Static singleton property
-    // GameManager.Instance.Whatever();
-    public static GameManager Instance
-    {
-        // Here we use the ?? operator, to return 'instance' if 'instance' does not equal null
-        // otherwise we assign instance to a new component and return that
-        get { return instance ?? (instance = new GameObject("GameManager").AddComponent<GameManager>()); }
-    }
+    [SerializeField] private bool isGame = false;
 
     #region Initialisation
-        private void Awake()
-        {
-            //Level Generation and Level Display logic
-            foreach (LevelParser level in levels) level.InitLevel();
-            foreach (LevelDisplayer displayer in levelDisplayers) displayer.DisplayLevel();
-        }
+    private void Awake()
+    {
+        //Level Generation and Level Display logic
+        foreach (LevelParser level in levels) level.InitLevel();
+        foreach (LevelDisplayer displayer in levelDisplayers) displayer.DisplayLevel();
+    }
 
-        private void Start()
-        {
-            InitPacman();
-            StartGame();
-        }
+    private void Start()
+    {
+        InitPacman();
+        InitGhosts();
+        StartGame();
+    }
 
-        void InitPacman()
+    void InitPacman()
+    {
+        //Instantiating pacman's object
+        pacman = Instantiate(pacman, levels[defaultSpawn].transform);
+        pacman.name = "Pacman";
+        pacman.transform.localPosition = new Vector3(pacman.transform.localPosition.x, pacman.transform.localPosition.y, pacman.transform.localPosition.z - 1);
+
+        //Init pacman spawn coordinates
+        pacman.level = levels[defaultSpawn];
+        pacman.Spawn();
+    }
+
+    void InitGhosts()
+    {
+        for (int i = 0; i < ghostPrefabs.Count; i++)
         {
-            //Instantiating pacman's object
-            pacman = Instantiate(pacman, levels[defaultSpawn].transform);
-            pacman.name = "Pacman";
-            pacman.transform.localPosition = new Vector3(pacman.transform.localPosition.x, pacman.transform.localPosition.y, pacman.transform.localPosition.z - 1);
+            ghostPrefabs[i] = Instantiate(ghostPrefabs[i], levels[defaultSpawn].transform);
+            ghostPrefabs[i].name = ghostPrefabs[i].type.ToString();
+            ghostPrefabs[i].transform.localPosition = new Vector3(ghostPrefabs[i].transform.localPosition.x, ghostPrefabs[i].transform.localPosition.y, ghostPrefabs[i].transform.localPosition.z - 1);
+            ghostPrefabs[i].target = pacman;
 
             //Init pacman spawn coordinates
-            pacman.level = levels[defaultSpawn];
-            pacman.Spawn();
+            ghostPrefabs[i].level = levels[defaultSpawn];
+            ghostPrefabs[i].Spawn();
         }
+    }
     #endregion
 
 
@@ -76,22 +81,40 @@ public class GameManager : MonoBehaviour
 
     #region Game Logic
     void StartGame()
+    {
+        isGame = true;
+        StartCoroutine(UpdateGameLogic());
+        StartCoroutine(SpawnGhostsInOrder());
+    }
+
+    IEnumerator SpawnGhostsInOrder()
+    {
+        foreach(GhostBehavior ghost in ghostPrefabs)
         {
-            isGame = true;
-            StartCoroutine(UpdateGameLogic());
+            ghost.Spawned = true;
+            yield return new WaitForSecondsRealtime(timeTillSpawn);
         }
+    }
 
-        IEnumerator UpdateGameLogic()
+    IEnumerator UpdateGameLogic()
+    {
+        while (isGame)
         {
-            while (isGame)
-            {
-                //Gameloop and update logic
-                Debug.Log("TICK : " + Time.time);
+            //Gameloop and update logic
+            Debug.Log("TICK : " + Time.time);
 
+            //Update Pacman
             pacman.Move(currDirection);
-                //Wait timeTillUpdate seconds till next update cycle
-                yield return new WaitForSecondsRealtime(timeTillUpdate);
+
+            //Update all ghosts
+            foreach(GhostBehavior ghost in ghostPrefabs)
+            {
+                ghost.ComputeNextMove();
             }
+
+            //Wait timeTillUpdate seconds till next update cycle
+            yield return new WaitForSecondsRealtime(timeTillUpdate);
         }
+    }
     #endregion
 }

@@ -5,15 +5,15 @@ using UnityEngine;
 enum cameFrom { Up, Down, Left, Right}
 public class TileDebug : MonoBehaviour
 {
-    private const int mapWidth = 28;
-    private const int mapHeight = 31;
+    public const int mapWidth = 28;
+    public const int mapHeight = 31;
 
     [Header("Type & Settings")]
     private TileObject tile;
     [SerializeField] private TileType type;
     [SerializeField] private int index;
 
-    [Header("Voisins")]
+    [Header("Neighbours")]
     [SerializeField] private TileDebug neighbourUp;
     [SerializeField] private TileDebug neighbourDown;
     [SerializeField] private TileDebug neighbourLeft;
