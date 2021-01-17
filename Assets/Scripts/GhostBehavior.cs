@@ -10,11 +10,11 @@ public enum GhostType
     Clyde //Jaune
 }
 
-public enum BehaviorMode
+public enum ChaseMode
 {
     Chase,
     Scatter,
-    Frightened,
+    Frighten,
 }
 
 public class GhostBehavior : MonoBehaviour
@@ -28,6 +28,7 @@ public class GhostBehavior : MonoBehaviour
     [SerializeField] private MoveDir currentDir;
     [SerializeField] private Vector2 position;
     [SerializeField] public bool Spawned = false;
+    [SerializeField] private GhostBehavior blinky;
 
     [Header("Settings")]
     public GhostType type;
@@ -35,19 +36,34 @@ public class GhostBehavior : MonoBehaviour
 
     public void Spawn()
     {
+        if (type == GhostType.Inky) blinky = GameObject.Find("Blinky").GetComponent<GhostBehavior>();
         position = new Vector2((int)LevelParser.mapWidth/2-1, (int)LevelParser.mapHeight/2);
         UpdatePosition();
     }
 
 
-    public void ComputeNextMove()
+    public void ComputeNextMove(ChaseMode mode)
     {
+        Vector2 target;
+
         if (Spawned)
         {
             Move();
 
-            Vector2 target = ComputeTarget(type);
-            //Vector2 target = ScatterTarget(type);
+            switch (mode)
+            {
+                case ChaseMode.Chase:
+                    target = ComputeTarget(type);
+                    break;
+
+                case ChaseMode.Scatter:
+                    target = ScatterTarget(type);
+                    break;
+
+                default:
+                    target = position;
+                    break;
+            }
 
             currentDir = (MoveDir)GetTurnClosestToTarget(position, target, GetOpenTiles(position));
 
@@ -115,17 +131,45 @@ public class GhostBehavior : MonoBehaviour
                 switch (target.lastDir)
                 {
                     case MoveDir.Up:
-                        return new Vector2(Misc.ConstraintValueBetween((int)target.position.x - 4, 0, LevelParser.mapWidth), Misc.ConstraintValueBetween((int)target.position.y - 4, 0, LevelParser.mapHeight));
+                        return new Vector2(target.position.x - 4, target.position.y - 4);
                     case MoveDir.Down:
-                        return new Vector2(target.position.x, Misc.ConstraintValueBetween((int)target.position.y + 4, 0, LevelParser.mapHeight));
+                        return new Vector2(target.position.x, target.position.y + 4);
                     case MoveDir.Left:
-                        return new Vector2(Misc.ConstraintValueBetween((int)target.position.x - 4, 0, LevelParser.mapWidth), target.position.y);
+                        return new Vector2(target.position.x - 4, target.position.y);
                     case MoveDir.Right:
-                        return new Vector2(Misc.ConstraintValueBetween((int)target.position.x + 4, 0, LevelParser.mapWidth), target.position.y);
+                        return new Vector2(target.position.x + 4, target.position.y);
                     default:
                         return target.position;
                 }
 
+            case GhostType.Inky:
+                Vector2 tempTarget;
+                switch (target.lastDir)
+                {
+                    case MoveDir.Up:
+                        tempTarget = new Vector2(target.position.x - 2, target.position.y - 2);
+                        break;
+
+                    case MoveDir.Down:
+                        tempTarget = new Vector2(target.position.x, target.position.y + 2);
+                        break;
+
+                    case MoveDir.Left:
+                        tempTarget = new Vector2(target.position.x - 2, target.position.y);
+                        break;
+
+                    case MoveDir.Right:
+                        tempTarget = new Vector2(target.position.x + 2, target.position.y);
+                        break;
+
+                    default:
+                        tempTarget = target.position;
+                        break;
+                }
+                return tempTarget + (tempTarget - blinky.position);
+
+            case GhostType.Clyde:
+                return Vector2.Distance(position, target.position) < 8 ? ScatterTarget(type) : target.position;
 
             default:
                 return target.position;
@@ -177,15 +221,34 @@ public class GhostBehavior : MonoBehaviour
     //Get all open tiles around the ghost
     private bool[] GetOpenTiles(Vector2 pos)
     {
-
         bool[] openTiles = new bool[4];
-        openTiles[(int)MoveDir.Up] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourUp.type != TileType.Outside) ? true : false;
-        openTiles[(int)MoveDir.Down] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourDown.type != TileType.Outside) ? true : false;
-        openTiles[(int)MoveDir.Left] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourLeft.type != TileType.Outside) ? true : false;
-        openTiles[(int)MoveDir.Right] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourRight.type != TileType.Outside) ? true : false;
 
-        int oppDirEnum = RotateAboutFace((int)lastDir); // current opposite direction enum
-        openTiles[oppDirEnum] = false;
+        if (position.x <= 0 && currentDir == MoveDir.Left)
+        {
+            position.x = LevelParser.mapWidth - 1;
+            openTiles[(int)MoveDir.Up] = false;
+            openTiles[(int)MoveDir.Down] = false;
+            openTiles[(int)MoveDir.Left] = true;
+            openTiles[(int)MoveDir.Right] = false;
+        }
+        else if (position.x >= LevelParser.mapWidth - 1 && currentDir == MoveDir.Right)
+        {
+            position.x = 0;
+            openTiles[(int)MoveDir.Up] = false;
+            openTiles[(int)MoveDir.Down] = false;
+            openTiles[(int)MoveDir.Left] = false;
+            openTiles[(int)MoveDir.Right] = true;
+        }
+        else
+        {
+            openTiles[(int)MoveDir.Up] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourUp.type != TileType.Outside) ? true : false;
+            openTiles[(int)MoveDir.Down] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourDown.type != TileType.Outside) ? true : false;
+            openTiles[(int)MoveDir.Left] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourLeft.type != TileType.Outside) ? true : false;
+            openTiles[(int)MoveDir.Right] = (level.mapMatrix[(int)pos.x, (int)pos.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)pos.x, (int)pos.y].neighbourRight.type != TileType.Outside) ? true : false;
+
+            int oppDirEnum = RotateAboutFace((int)lastDir); // current opposite direction enum
+            openTiles[oppDirEnum] = false;
+        }
 
         return openTiles;
     }
