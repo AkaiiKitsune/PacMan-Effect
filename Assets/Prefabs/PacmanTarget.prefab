@@ -95,3 +95,6 @@ MonoBehaviour:
   level: {fileID: 0}
   position: {x: 0, y: 0}
   isAlive: 0
+  lastDir: 0
+  Speed: 0.7
+  SpeedMultiplicator: 0.2

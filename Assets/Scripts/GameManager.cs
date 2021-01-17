@@ -23,6 +23,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MoveDir currDirection = MoveDir.Up;
     [SerializeField] private bool isGame = false;
 
+    [Header("Chase Pattern")]
+    private ChaseMode CurrentMode;
+    [SerializeField] List<ChaseMode> ChaseModes;
+    [SerializeField] List<int> ChaseTime; 
+
+
     #region Initialisation
     private void Awake()
     {
@@ -84,6 +90,7 @@ public class GameManager : MonoBehaviour
     {
         isGame = true;
         StartCoroutine(UpdateGameLogic());
+        StartCoroutine(UpdateChaseLogic());
         StartCoroutine(SpawnGhostsInOrder());
     }
 
@@ -109,12 +116,23 @@ public class GameManager : MonoBehaviour
             //Update all ghosts
             foreach(GhostBehavior ghost in ghostPrefabs)
             {
-                ghost.ComputeNextMove();
+                ghost.ComputeNextMove(CurrentMode);
             }
 
             //Wait timeTillUpdate seconds till next update cycle
             yield return new WaitForSecondsRealtime(timeTillUpdate);
         }
+    }
+    
+    IEnumerator UpdateChaseLogic()
+    {
+        for(int i=0; i<ChaseModes.Count; i++)
+        {
+            CurrentMode = ChaseModes[i];
+            yield return new WaitForSecondsRealtime(ChaseTime[i]);
+        }
+
+        CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
     }
     #endregion
 }
