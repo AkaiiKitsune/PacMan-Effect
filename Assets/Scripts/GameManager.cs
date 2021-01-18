@@ -26,8 +26,10 @@ public class GameManager : MonoBehaviour
     [Header("Chase Pattern")]
     private ChaseMode CurrentMode;
     [SerializeField] List<ChaseMode> ChaseModes;
-    [SerializeField] List<int> ChaseTime; 
+    [SerializeField] List<int> ChaseTime;
 
+    [Header("Score")]
+    [SerializeField] private ScoreManager score;
 
     #region Initialisation
     private void Awake()
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         InitPacman();
         InitGhosts();
+        score.InitScore();
         StartGame();
     }
 
@@ -53,8 +56,10 @@ public class GameManager : MonoBehaviour
 
         //Init pacman spawn coordinates
         pacman.level = levels[defaultSpawn];
+        pacman.score = score;
         pacman.Spawn();
     }
+
 
     void InitGhosts()
     {

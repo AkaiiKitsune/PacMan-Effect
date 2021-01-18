@@ -23,6 +23,9 @@ public class PacmanBehavior : MonoBehaviour
     [SerializeField] public float Speed = 0.7f;
     [SerializeField] public float SpeedMultiplicator = 0.2f;
 
+    [Header("Score Manager")]
+    [SerializeField] public ScoreManager score;
+
     //Handle setting position at spawn time
     public void Spawn()
     {
@@ -83,14 +86,18 @@ public class PacmanBehavior : MonoBehaviour
                         position.x += 1;
                     break;
             }
-
-            UpdatePosition();
-            level.mapMatrix[(int)position.x, (int)position.y].type = TileType.Air; //TO CHANGE TO ADD POINTS IF YOU EAT A BALL
+            UpdatePosition();            
         }
+        UpdateTile(); 
     }
 
     private void UpdatePosition() => transform.localPosition = Misc.ConvertToMatrixCoordinates(position);
 
+    private void UpdateTile()
+    {
+        score.AddScore(level.mapMatrix[(int)position.x, (int)position.y].type);
+        level.mapMatrix[(int)position.x, (int)position.y].type = TileType.Air;
+    }
 
     /// TODO Implement this hell
     private void ChangeTerrain(LevelParser levelToJumpTo) { }
