@@ -18,6 +18,12 @@ public class ScoreManager : MonoBehaviour
         {
             score += 10;
         }
+        else if (type == TileType.Super)
+        {
+            score += 50;
+        }
+
+
     }
 
     public int ShowScore ()

@@ -18,7 +18,7 @@ public class PacmanBehavior : MonoBehaviour
     [SerializeField] public Vector2 position;
     [SerializeField] public bool isAlive = true;
     [SerializeField] public MoveDir lastDir;
-
+    
     [Header("Settings")]
     [SerializeField] public float Speed = 0.7f;
     [SerializeField] public float SpeedMultiplicator = 0.2f;
@@ -97,6 +97,18 @@ public class PacmanBehavior : MonoBehaviour
     {
         score.AddScore(level.mapMatrix[(int)position.x, (int)position.y].type);
         level.mapMatrix[(int)position.x, (int)position.y].type = TileType.Air;
+    }
+
+    public bool EnnemyCollide(Vector2 ennemyPos)
+    {
+        if (ennemyPos == position)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /// TODO Implement this hell

@@ -26,7 +26,7 @@ public class GhostBehavior : MonoBehaviour
     public PacmanBehavior target;
     private MoveDir lastDir;
     [SerializeField] private MoveDir currentDir;
-    [SerializeField] private Vector2 position;
+    [SerializeField] public Vector2 position;
     [SerializeField] public bool Spawned = false;
     [SerializeField] private GhostBehavior blinky;
 

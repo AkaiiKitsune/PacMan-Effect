@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     public float timeTillUpdate = 0.5f;
     public float timeTillSpawn = 3f;
+    [SerializeField] public int pacmanLife = 3;
 
     [Header("Game Objects")]
     [SerializeField] private PacmanBehavior pacman;
@@ -118,6 +119,18 @@ public class GameManager : MonoBehaviour
             //Update Pacman
             pacman.Move(currDirection);
 
+            //Check if pacman collide an ennemy
+            foreach (GhostBehavior ghost in ghostPrefabs)
+            {
+                if (pacman.EnnemyCollide(ghost.position) && pacmanLife > 0)
+                {
+                    pacman.Spawn();
+                    GhostRespawn();
+                    pacmanLife -= 1;
+                }
+                else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) GameOver();
+            }
+
             //Update all ghosts
             foreach(GhostBehavior ghost in ghostPrefabs)
             {
@@ -127,6 +140,22 @@ public class GameManager : MonoBehaviour
             //Wait timeTillUpdate seconds till next update cycle
             yield return new WaitForSecondsRealtime(timeTillUpdate);
         }
+    }
+
+    //Need help to fix ai respawn
+    void GhostRespawn()
+    {
+        foreach (GhostBehavior ghost in ghostPrefabs)
+        {
+            ghost.Spawn();
+            ghost.Spawned = false;
+        }
+        StartCoroutine(SpawnGhostsInOrder());
+    }
+
+    void GameOver()
+    {
+        Debug.Log("GameOver");
     }
     
     IEnumerator UpdateChaseLogic()
