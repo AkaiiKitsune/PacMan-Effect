@@ -36,6 +36,9 @@ public class GhostBehavior : MonoBehaviour
 
     public void Spawn()
     {
+        currentDir = MoveDir.Up;
+        lastDir = MoveDir.Up;
+
         if (type == GhostType.Inky) blinky = GameObject.Find("Blinky").GetComponent<GhostBehavior>();
         position = new Vector2((int)LevelParser.mapWidth/2-1, (int)LevelParser.mapHeight/2);
         UpdatePosition();

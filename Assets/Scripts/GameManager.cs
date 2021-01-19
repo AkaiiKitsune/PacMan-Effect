@@ -124,18 +124,14 @@ public class GameManager : MonoBehaviour
             {
                 if (pacman.EnnemyCollide(ghost.position) && pacmanLife > 0)
                 {
-                    pacman.Spawn();
                     GhostRespawn();
+                    pacman.Spawn();
                     pacmanLife -= 1;
                 }
                 else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) GameOver();
+                else ghost.ComputeNextMove(CurrentMode);
             }
 
-            //Update all ghosts
-            foreach(GhostBehavior ghost in ghostPrefabs)
-            {
-                ghost.ComputeNextMove(CurrentMode);
-            }
 
             //Wait timeTillUpdate seconds till next update cycle
             yield return new WaitForSecondsRealtime(timeTillUpdate);
@@ -147,8 +143,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (GhostBehavior ghost in ghostPrefabs)
         {
-            ghost.Spawn();
             ghost.Spawned = false;
+            ghost.Spawn();
         }
         StartCoroutine(SpawnGhostsInOrder());
     }
