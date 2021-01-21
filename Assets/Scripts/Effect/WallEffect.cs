@@ -43,16 +43,4 @@ public class WallEffect : MonoBehaviour
             _wallObject[Random.Range( 0, _wallObject.Count)].GetComponent<ChangeMaterialProperties>().GoWhite();
         }
     }
-
-    /*//Même chose que audessus
-    public void TriggerResetColor(int index)
-    {
-        Debug.Log("Index : " + index);
-        Debug.Log("Taille de la list : " + _wallObject.Count);
-
-        for (int i = 0; i < _wallObject.Count; i++)
-        {
-            _wallObject[i].GetComponent<ChangeMaterialProperties>().ResetColor();
-        }
-    }*/
 }
