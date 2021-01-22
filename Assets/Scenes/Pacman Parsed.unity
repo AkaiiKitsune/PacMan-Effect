@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 2066316458}
+  power: {fileID: 2115141167}
   score: 0
 --- !u!4 &1904630989
 Transform:
@@ -452,6 +453,7 @@ MonoBehaviour:
   ChaseModes: 01000000000000000100000000000000010000000000000001000000
   ChaseTime: 07000000140000000700000014000000050000001400000005000000
   score: {fileID: 1904630988}
+  power: {fileID: 2115141167}
 --- !u!4 &2029151646
 Transform:
   m_ObjectHideFlags: 0
@@ -532,6 +534,49 @@ MonoBehaviour:
   - {fileID: 4631655885302041404, guid: 5b76e0f9a02a7494bbf65d59b1ece1eb, type: 3}
   - {fileID: 6155894026123569664, guid: 3446eb6f48209c140a3b04794314db8b, type: 3}
   pacmanSpawn: {x: 0, y: 0}
+--- !u!1 &2115141166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2115141168}
+  - component: {fileID: 2115141167}
+  m_Layer: 0
+  m_Name: PowerUpManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2115141167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115141166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68859732186578c4ba0a9ec82cd223fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2115141168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115141166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.077057, y: 7.093996, z: 28.490116}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2145528979
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,8 +29,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<ChaseMode> ChaseModes;
     [SerializeField] List<int> ChaseTime;
 
-    [Header("Score")]
+    [Header("Score & PowerUp")]
     [SerializeField] private ScoreManager score;
+    [SerializeField] private PowerUp power;
 
     #region Initialisation
     private void Awake()
@@ -89,6 +90,11 @@ public class GameManager : MonoBehaviour
 
         if (moveHorizontal > .1) currDirection = MoveDir.Right;
         else if (moveHorizontal < -.1) currDirection = MoveDir.Left;
+
+        if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
+        else CurrentMode = ChaseMode.Chase;
+
+       
     }
 
     #region Game Logic

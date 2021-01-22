@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
+
 public class ScoreManager : MonoBehaviour
 {
     [Header("Level Reference")]
     [SerializeField] private LevelParser level;
+    [SerializeField] private PowerUp power;
 
     [SerializeField] private int score;
+
 
     public void InitScore ()
     {
@@ -21,6 +24,7 @@ public class ScoreManager : MonoBehaviour
         else if (type == TileType.Super)
         {
             score += 50;
+            power.SuperPacman();
         }
 
 
