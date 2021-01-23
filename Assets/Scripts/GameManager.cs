@@ -92,9 +92,6 @@ public class GameManager : MonoBehaviour
         else if (moveHorizontal < -.1) currDirection = MoveDir.Left;
 
         if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
-        else CurrentMode = ChaseMode.Chase;
-
-       
     }
 
     #region Game Logic
@@ -167,7 +164,6 @@ public class GameManager : MonoBehaviour
             CurrentMode = ChaseModes[i];
             yield return new WaitForSecondsRealtime(ChaseTime[i]);
         }
-
         CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
     }
     #endregion
