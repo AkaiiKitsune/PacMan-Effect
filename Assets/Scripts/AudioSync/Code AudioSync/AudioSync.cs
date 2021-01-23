@@ -91,13 +91,13 @@ public class AudioSync : MonoBehaviour //Cette classe permet d'utiliser des fonc
             normalizedReducedSpectrumBuffer[i] = reducedSpectrumBuffer[i] / reducedSpectrumMaximum[i];
 
             //Il fait soit un event Off ou On 
-            if(normalizedReducedSpectrumBuffer[i] < triggerThreshold)
+            if (normalizedReducedSpectrumBuffer[i] < triggerThreshold)
             {
-                eventsOff.Invoke(i);
+                eventsOff?.Invoke(i);
             }
             else
             {
-                eventsOn.Invoke(i);
+                eventsOn?.Invoke(i);
             }
         }
     }

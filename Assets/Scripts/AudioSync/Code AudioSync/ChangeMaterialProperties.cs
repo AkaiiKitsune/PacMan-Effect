@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class ChangeMaterialProperties : MonoBehaviour
 {
+    //Cette fonction s'éxecute sur le Game Object
     Material objectMaterial;
     public bool mustGoWhite = false;
-    Color originalEmissionColor;    
+    Color originalEmissionColor;
+
+    [SerializeField] private float fadeSpeed = 0.005F;
+    private float fade = 0;
 
     // équivalent d'un constructeur
     void Awake()
@@ -18,15 +22,21 @@ public class ChangeMaterialProperties : MonoBehaviour
     // Un Update... et il sert a rien ¯\_(ツ)_/¯
     void Update()
     {
-       
+        fade -= fadeSpeed;
+        Color whiteColor = Color.white * 2;
+        objectMaterial.SetColor("_EmissionColor", Color.Lerp(originalEmissionColor, whiteColor, fade));
     }
 
     //Permet de changer la couleur en blanc quand on appele la fonction
     public void GoWhite()
     {
+        
         Color whiteColor = Color.white * 2;
 
         objectMaterial.SetColor("_EmissionColor", whiteColor);
+        fade = 1;
+        
+        //StartCoroutine(SmoothResetColor());
     }
 
     //Permet de Reset la couleur quand on appele la fonction
@@ -34,4 +44,15 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         objectMaterial.SetColor("_EmissionColor", originalEmissionColor);
     }
+
+    /*
+    private IEnumerator SmoothResetColor()
+    {
+
+        Color whiteColor = Color.white * 2;
+        while () { 
+            objectMaterial.SetColor("_EmissionColor", Color.Lerp(whiteColor, originalEmissionColor, 0.1F));
+            yield return new WaitForSeconds(0.1F);
+        }
+    }*/
 }
