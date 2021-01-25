@@ -11,6 +11,7 @@ public class LevelParser : MonoBehaviour
     public TileObject[,] mapMatrix = new TileObject[mapWidth, mapHeight];
     private char[] _mapContentString = null;
     [SerializeField] private TextAsset _maps;
+    public LevelDisplayer displayer;
 
     [Header("Blocks")]
     public List<Transform> listBlocks = new List<Transform>(5);
@@ -93,7 +94,7 @@ public class LevelParser : MonoBehaviour
                 break;
         }
 
-        return new TileObject(index, _type, listBlocks);
+        return new TileObject(index, new Vector2(x, y), _type, listBlocks, this);
     }
 
     //Set each tile's 4 neighbours accordingly

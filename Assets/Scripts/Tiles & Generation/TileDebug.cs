@@ -37,6 +37,12 @@ public class TileDebug : MonoBehaviour
                 break;
         }
     }
+
+    public void SetAir()
+    {
+        this.gameObject.GetComponentInChildren<Renderer>().enabled = false;
+    }
+
     private void SetTileNeighbour(int x, int y)
     {
         if (x > 0)

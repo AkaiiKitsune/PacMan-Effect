@@ -96,7 +96,7 @@ public class PacmanBehavior : MonoBehaviour
     private void UpdateTile()
     {
         score.AddScore(level.mapMatrix[(int)position.x, (int)position.y].type);
-        level.mapMatrix[(int)position.x, (int)position.y].type = TileType.Air;
+        level.mapMatrix[(int)position.x, (int)position.y].SetType(TileType.Air);
     }
 
     public bool EnnemyCollide(Vector2 ennemyPos)
