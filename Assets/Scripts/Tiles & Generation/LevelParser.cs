@@ -55,6 +55,7 @@ public class LevelParser : MonoBehaviour
             {
                 //Create a tile
                 mapMatrix[x, y] = MakeTileObject(x, y);
+
                 //And set it's neighbours
                 SetTileNeighbour(x, y);
             }

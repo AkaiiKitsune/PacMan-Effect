@@ -34,6 +34,7 @@ public class LevelDisplayer : MonoBehaviour
                 temp.transform.parent = transform;
                 temp.localScale *= size;
                 displayTiles[x, y] = temp.GetComponent<TileDebug>();
+                //GetComponent<TileEffect>().SendTileDebug(displayTiles[x, y].gameObject);
 
                 tempx += size;
             }

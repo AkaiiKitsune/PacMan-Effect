@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ScoreManager score;
     [SerializeField] private PowerUp power;
 
+    [Header("UI")]
+    [SerializeField] private UIManager UIManager;
+
     #region Initialisation
     private void Awake()
     {
@@ -132,7 +135,7 @@ public class GameManager : MonoBehaviour
                     pacmanLife -= 1;
                 }
                 else if (pacman.EnnemyCollide(ghost.position) && power.IsPacmanSuper()) ghost.Spawn();
-                else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) GameOver();
+                else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) UIManager.GameOver();
                 else ghost.ComputeNextMove(CurrentMode);
             }
 
@@ -153,10 +156,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnGhostsInOrder());
     }
 
-    void GameOver()
+    /*void GameOver()
     {
         Debug.Log("GameOver");
-    }
+
+    }*/
     
     IEnumerator UpdateChaseLogic()
     {

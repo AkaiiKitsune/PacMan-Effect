@@ -36,6 +36,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int _progressionMax;   //total de pac gomme
     [SerializeField] private int _progression;      //pac gomme manger
 
+    //Affichage du gameover
+    [SerializeField] private Canvas UIGameOver;
+    private bool _PacManNot = false;
+
     //Debug Log
     public bool _test = false;
 
@@ -43,7 +47,7 @@ public class UIManager : MonoBehaviour
     //========================= Start is called before the first frame update
     void Start()
     {
-        TextScore.text = AddPoint(_score, 0);
+        /*TextScore.text = AddPoint(_score, 0);
         TextHighScore.text = AddPoint(_highScore, 0);
 
         //on fait aparaitre les pac-mans vie selon un ordre précis et on les stockes dans un tableau. 
@@ -54,7 +58,7 @@ public class UIManager : MonoBehaviour
             //y = position du score - l'écartement entre les vies - la distance d'écartement entre les vies * le combientième de vie (deuxième, troisième, ...)
             newPv.transform.position += new Vector3(TextScore.transform.position.x, TextScore.transform.position.y - 1.5f - (0.25f * i), 0f);
             Pv.Add(newPv);
-        }
+        }*/
     }
 
     //=========================Il sert pour le Debug 
@@ -160,7 +164,8 @@ public class UIManager : MonoBehaviour
     //Ajout de du power up et affichage
     public void TouchPower(GameObject newPowerUp)
     {
-        if (PowerUp == null) {
+        if (PowerUp == null)
+        {
             PowerUp = Instantiate(newPowerUp, this.transform);
             PowerUp.transform.position += new Vector3(TextHighScore.transform.position.x, TextHighScore.transform.position.y - 2f, 0f);
         }
@@ -185,6 +190,22 @@ public class UIManager : MonoBehaviour
     public void UpdateProgression()
     {
         float progresse = (float)_progression / (float)_progressionMax;
-        CercleProgres.fillAmount = progresse;
+        //CercleProgres.fillAmount = progresse;
+    }
+
+    //=========================Affichage du game over
+    public void GameOver()
+    {
+        if (_PacManNot == false)
+        {
+            Debug.Log("MORTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+            UIGameOver.gameObject.SetActive(true); 
+            _PacManNot = true;
+        }
+        else
+        {
+            UIGameOver.gameObject.SetActive(false);
+            _PacManNot = false;
+        }
     }
 }
