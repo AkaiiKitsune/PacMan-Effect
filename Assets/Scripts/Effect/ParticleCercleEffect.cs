@@ -20,7 +20,6 @@ public class ParticleCercleEffect : MonoBehaviour
 
     public void TriggerInstantiateCircle(int index)
     {
-        Debug.Log("Index : " + index);
         ParticleSystem part = Instantiate(PartSysCercle);
         part.transform.localPosition = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
     }

@@ -18,7 +18,8 @@ public class PacmanBehavior : MonoBehaviour
     [SerializeField] public Vector2 position;
     [SerializeField] public bool isAlive = true;
     [SerializeField] public MoveDir lastDir;
-    
+    [SerializeField] public bool colliding;
+
     [Header("Settings")]
     [SerializeField] public float Speed = 0.7f;
     [SerializeField] public float SpeedMultiplicator = 0.2f;
@@ -101,7 +102,7 @@ public class PacmanBehavior : MonoBehaviour
 
     public bool EnnemyCollide(Vector2 ennemyPos)
     {
-        if (ennemyPos == position)
+        if (new Vector2((int)ennemyPos.x, (int)ennemyPos.y) == new Vector2((int)position.x, (int)position.y))
         {
             return true;
         }
@@ -110,6 +111,16 @@ public class PacmanBehavior : MonoBehaviour
             return false;
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        colliding = true;
+    }
+    void OnCollisionExit(Collision collision)
+    {
+        colliding = false;
+    }
+
 
     /// TODO Implement this hell
     private void ChangeTerrain(LevelParser levelToJumpTo) { }

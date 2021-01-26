@@ -128,14 +128,17 @@ public class GameManager : MonoBehaviour
             //Check if pacman collide an ennemy
             foreach (GhostBehavior ghost in ghostPrefabs)
             {
-                if (pacman.EnnemyCollide(ghost.position) && pacmanLife > 0 && !power.IsPacmanSuper())
+                if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
                 {
-                    GhostRespawn();
-                    pacman.Spawn();
+                    pacman.colliding = false;
+                    pacman.lastDir = MoveDir.Up;
                     pacmanLife -= 1;
+                    pacman.Spawn();
+
+                    GhostRespawn();
                 }
-                else if (pacman.EnnemyCollide(ghost.position) && power.IsPacmanSuper()) ghost.Spawn();
-                else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) UIManager.GameOver();
+                else if (pacman.colliding && power.IsPacmanSuper()) ghost.Spawn();
+                else if (pacman.colliding && pacmanLife == 0) UIManager.GameOver();
                 else ghost.ComputeNextMove(CurrentMode);
             }
 
