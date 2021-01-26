@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         while (isGame)
         {
             //Gameloop and update logic
-            Debug.Log("TICK : " + Time.time);
+           // Debug.Log("TICK : " + Time.time);
 
             //Update Pacman
             pacman.Move(currDirection);
@@ -125,12 +125,13 @@ public class GameManager : MonoBehaviour
             //Check if pacman collide an ennemy
             foreach (GhostBehavior ghost in ghostPrefabs)
             {
-                if (pacman.EnnemyCollide(ghost.position) && pacmanLife > 0)
+                if (pacman.EnnemyCollide(ghost.position) && pacmanLife > 0 && !power.IsPacmanSuper())
                 {
                     GhostRespawn();
                     pacman.Spawn();
                     pacmanLife -= 1;
                 }
+                else if (pacman.EnnemyCollide(ghost.position) && power.IsPacmanSuper()) ghost.Spawn();
                 else if (pacman.EnnemyCollide(ghost.position) && pacmanLife == 0) GameOver();
                 else ghost.ComputeNextMove(CurrentMode);
             }

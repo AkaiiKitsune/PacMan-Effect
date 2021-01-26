@@ -5,7 +5,7 @@ public class ScoreManager : MonoBehaviour
 {
     [Header("Level Reference")]
     [SerializeField] private LevelParser level;
-    [SerializeField] private PowerUp power;
+    [SerializeField] public PowerUp power;
 
     [SerializeField] private int score;
 
