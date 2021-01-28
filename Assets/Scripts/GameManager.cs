@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -127,8 +127,8 @@ public class GameManager : MonoBehaviour
             pacman.Move(currDirection);
 
             //Check if pacman collide an ennemy
-            foreach (GhostBehavior ghost in ghostPrefabs)
-            {
+                foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
+            
                 if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
                 {
                     pacman.colliding = false;
@@ -139,10 +139,14 @@ public class GameManager : MonoBehaviour
 
                     GhostRespawn();
                 }
-                else if (pacman.colliding && power.IsPacmanSuper()) ghost.Spawn();
+                else if (pacman.colliding && power.IsPacmanSuper()) { 
+                    Debug.Log(pacman.collideName);
+                    GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
+                }
                 else if (pacman.colliding && pacmanLife == 0) UIManager.GameOver();
-                else ghost.ComputeNextMove(CurrentMode);
-            }
+                
+                   
+                
 
 
             //Wait timeTillUpdate seconds till next update cycle

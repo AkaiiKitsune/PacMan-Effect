@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 public enum MoveDir
@@ -19,6 +19,8 @@ public class PacmanBehavior : MonoBehaviour
     [SerializeField] public bool isAlive = true;
     [SerializeField] public MoveDir lastDir;
     [SerializeField] public bool colliding;
+    [SerializeField] public string collideName;
+    
 
     [Header("Settings")]
     [SerializeField] public float Speed = 0.7f;
@@ -115,6 +117,8 @@ public class PacmanBehavior : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         colliding = true;
+        collideName = collision.gameObject.name;
+    
     }
     void OnCollisionExit(Collision collision)
     {
