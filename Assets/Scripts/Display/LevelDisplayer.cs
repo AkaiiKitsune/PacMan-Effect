@@ -17,6 +17,10 @@ public class LevelDisplayer : MonoBehaviour
     [Header("Settings")]
     public static float size = .7f;
 
+    [Header("UI and Effect")]
+    [SerializeField] private TileEffect TileEffect;
+    [SerializeField] private UIManager UIManager;
+
     public void DisplayLevel()
     {
         float tempx = origin.transform.position.x, tempy = this.transform.position.y;
@@ -30,12 +34,12 @@ public class LevelDisplayer : MonoBehaviour
                 //Instantiate and setup the tile.
                 Transform temp = Instantiate(mapMatrix.mapMatrix[x, y].currentBlock, new Vector3(tempx, tempy, 0), Quaternion.identity);
                 temp.gameObject.AddComponent<TileDebug>().Init(mapMatrix.mapMatrix[x, y]);
+                if (mapMatrix.mapMatrix[x, y].type == TileType.Wall) { temp.gameObject.AddComponent<ChangeMaterialProperties>(); }
                 temp.name = mapMatrix.mapMatrix[x, y].index.ToString();
                 temp.transform.parent = transform;
                 temp.localScale *= size;
                 displayTiles[x, y] = temp.GetComponent<TileDebug>();
-                //GetComponent<TileEffect>().SendTileDebug(displayTiles[x, y].gameObject);
-
+                
                 tempx += size;
             }
             //Reset the temporary position

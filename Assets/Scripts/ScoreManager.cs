@@ -8,11 +8,13 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] public PowerUp power;
 
     [SerializeField] private int score;
-
+    [SerializeField] private UIManager UIManager;
 
     public void InitScore ()
     {
         score = 0;
+        UIManager.TextScore.text = UIManager.AddPoint(score);
+        UIManager.SetProgressionMax();
     }
 
     public void AddScore (TileType type)
@@ -20,10 +22,14 @@ public class ScoreManager : MonoBehaviour
         if (type == TileType.Ball)
         {
             score += 10;
+            UIManager.TextScore.text = UIManager.AddPoint(score);
+            UIManager.GetProgression();
         }
         else if (type == TileType.Super)
         {
             score += 50;
+            UIManager.TextScore.text = UIManager.AddPoint(score);
+            UIManager.GetProgression();
             power.SuperPacman();
         }
 

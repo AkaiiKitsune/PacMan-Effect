@@ -1,42 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // Gestion du score
-    [SerializeField] private Text TextScore;
-    [SerializeField] private Text TextHighScore;
-
-    [SerializeField] private int _score = 0;
-    [SerializeField] private int _highScore = 10000;
+    [Header("Gestion du score")]
+    public TextMeshProUGUI TextScore;
+    public TextMeshProUGUI TextHighScore;
 
 
-    //gestion des pop up de point
+    [Header("gestion des pop up")]
     [SerializeField] private GameObject TexteVolant;
 
 
-    //Gestion de l'affichage de la Vie
+    [Header("affichage de la Vie")]
     [SerializeField] private GameObject ViePacMan;
-    [SerializeField] private List<GameObject> Pv = new List<GameObject>();
+    private List<GameObject> Pv = new List<GameObject>();
 
 
-    //Gestion de l'affichage de multiplicateur
-    [SerializeField] private List<GameObject> MultiPoint = new List<GameObject>();
+    [Header("affichage de multiplicateur")]
+    private List<GameObject> MultiPoint = new List<GameObject>();
 
 
-    //Gestion de l'affichage du power up
-    [SerializeField] private GameObject PowerUp;
+    [Header("affichage du power up")]
+    private GameObject PowerUp;
 
 
-    //Gestion de l'affichage de la progression du niveau
+    [Header("affichage de la progression du niveau")]
+    [SerializeField] private LevelDisplayer level;
     [SerializeField] private Image CercleProgres;
 
     [SerializeField] private int _progressionMax;   //total de pac gomme
     [SerializeField] private int _progression;      //pac gomme manger
 
-    //Affichage du gameover
+    [Header("gameover")]
     [SerializeField] private Canvas UIGameOver;
     private bool _PacManNot = false;
 
@@ -47,18 +46,8 @@ public class UIManager : MonoBehaviour
     //========================= Start is called before the first frame update
     void Start()
     {
-        /*TextScore.text = AddPoint(_score, 0);
-        TextHighScore.text = AddPoint(_highScore, 0);
-
-        //on fait aparaitre les pac-mans vie selon un ordre précis et on les stockes dans un tableau. 
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject newPv = Instantiate(ViePacMan, this.transform);
-
-            //y = position du score - l'écartement entre les vies - la distance d'écartement entre les vies * le combientième de vie (deuxième, troisième, ...)
-            newPv.transform.position += new Vector3(TextScore.transform.position.x, TextScore.transform.position.y - 1.5f - (0.25f * i), 0f);
-            Pv.Add(newPv);
-        }*/
+        TextScore.text = AddPoint(0);
+        TextHighScore.text = AddPoint(1200);
     }
 
     //=========================Il sert pour le Debug 
@@ -74,10 +63,9 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Système d'adition de point    
-    private string AddPoint(int score, int point)
+    public string AddPoint(int score)
     {
-        score += point;
-
+        Debug.Log(score.ToString());
         int limit = 100000;
         string zero = "";
         // tant que le score sera inférieur a limit, zero aura un 0 de plus et limit sera divisée par 10 à chaque fois jusqu'à que la condition soit fausse
@@ -86,7 +74,7 @@ public class UIManager : MonoBehaviour
             zero += "0";
             limit /= 10;
         }
-        return zero + score.ToString();
+        return (zero + score).ToString();
     }
 
     //=========================Gestion des textes
@@ -95,6 +83,20 @@ public class UIManager : MonoBehaviour
         var text = Instantiate(TexteVolant, instiator.transform.position, Quaternion.identity, transform);
         text.GetComponent<TextMesh>().text = content;
         text.GetComponent<TextMesh>().color = couleur;
+    }
+
+    #region Vie PacMan
+    //=========================Initialisation de l'affichage de la vie
+    public void InitShowPV(int vie)
+    {
+        //on fait aparaitre les pac-mans vie selon un ordre précis et on les stockes dans un tableau. 
+        for (int i = 0; i < vie; i++)
+        {
+            GameObject newPv = Instantiate(ViePacMan, this.transform);
+            //y = position du score - l'écartement entre les vies - la distance d'écartement entre les vies * le combientième de vie (deuxième, troisième, ...)
+            newPv.transform.position += new Vector3(TextScore.transform.position.x, TextScore.transform.position.y - 12f - (1.5f * i), 0f);
+            Pv.Add(newPv);
+        }
     }
 
     //=========================Gestion de la vie et de son affichage
@@ -110,7 +112,10 @@ public class UIManager : MonoBehaviour
         }
         else { return false; }
     }
+    #endregion
 
+
+    #region Multiplicateurs
     //=========================Gestion de l'affichage des multiplicateurs.
     //Addition d'un fruit multiplicateur
     public void AddMultiPoint(GameObject fruit)
@@ -119,9 +124,9 @@ public class UIManager : MonoBehaviour
         {
             var newFruit = Instantiate(fruit, this.transform);
 
-            float currentPos = 0.5f;
-            float largeur = 0.5f;
-            float longueur = 1f;
+            float currentPos = 6f;
+            float largeur = 2f;
+            float longueur = 4f;
             switch (MultiPoint.Count)
             {
                 case 0:
@@ -158,8 +163,9 @@ public class UIManager : MonoBehaviour
             MultiPoint.RemoveAt(MultiPoint.Count - 1);
         }
     }
+    #endregion
 
-
+    #region Power Up
     //=========================Gestion de l'affichage du power up
     //Ajout de du power up et affichage
     public void TouchPower(GameObject newPowerUp)
@@ -177,28 +183,45 @@ public class UIManager : MonoBehaviour
     {
         Destroy(PowerUp);
     }
+    #endregion
 
-
-    //=========================Récupération des parmètres de progression du niveau
-    public void GetProgression(int totaleGomme, int actuelGomme)
+    #region Progresion
+    //=========================Initialisation de la progression
+    public void SetProgressionMax()
     {
-        _progressionMax = totaleGomme;
-        _progression = actuelGomme;
+        _progressionMax = 0;
+        _progression = 0;
+        for (int y = 0; y < LevelParser.mapHeight; y++)
+        {
+            for (int x = 0; x < LevelParser.mapWidth; x++)
+            {
+                if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super)
+                {
+                    _progressionMax++;
+                }
+            }
+        }
+    }
+    //=========================Récupération des parmètres de progression du niveau
+    public void GetProgression()
+    {
+        _progression++;
+        UpdateProgression();
     }
 
     //=========================Gestion de l'affichage de la progression
-    public void UpdateProgression()
+    private void UpdateProgression()
     {
         float progresse = (float)_progression / (float)_progressionMax;
-        //CercleProgres.fillAmount = progresse;
+        CercleProgres.fillAmount = progresse;
     }
+    #endregion
 
     //=========================Affichage du game over
     public void GameOver()
     {
         if (_PacManNot == false)
         {
-            Debug.Log("MORTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
             UIGameOver.gameObject.SetActive(true); 
             _PacManNot = true;
         }

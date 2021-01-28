@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         InitGhosts();
         score.InitScore();
         StartGame();
+        UIManager.InitShowPV(pacmanLife);
     }
 
     void InitPacman()
@@ -133,6 +134,7 @@ public class GameManager : MonoBehaviour
                     pacman.colliding = false;
                     pacman.lastDir = MoveDir.Up;
                     pacmanLife -= 1;
+                    UIManager.Touch();
                     pacman.Spawn();
 
                     GhostRespawn();
@@ -158,12 +160,6 @@ public class GameManager : MonoBehaviour
         }
         StartCoroutine(SpawnGhostsInOrder());
     }
-
-    /*void GameOver()
-    {
-        Debug.Log("GameOver");
-
-    }*/
     
     IEnumerator UpdateChaseLogic()
     {

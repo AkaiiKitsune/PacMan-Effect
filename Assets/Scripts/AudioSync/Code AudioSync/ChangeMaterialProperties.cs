@@ -9,7 +9,7 @@ public class ChangeMaterialProperties : MonoBehaviour
     public bool mustGoWhite = false;
     Color originalEmissionColor;
 
-    [SerializeField] private float fadeSpeed = 0.005F;
+    [SerializeField] private float fadeSpeed = 0.05F;
     private float fade = 0;
 
     // équivalent d'un constructeur

@@ -10,7 +10,7 @@ public class TileDebug : MonoBehaviour
 
     [Header("Type & Settings")]
     private TileObject tile;
-    [SerializeField] private TileType type;
+    public TileType type;
     [SerializeField] private int index;
 
     [Header("Neighbours")]

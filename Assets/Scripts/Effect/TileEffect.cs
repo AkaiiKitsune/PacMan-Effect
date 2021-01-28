@@ -4,27 +4,7 @@ using UnityEngine;
 
 public class TileEffect : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _wallObject = new List<GameObject>();
-
-    //private int[] cpt = new int[8];
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void SendTileDebug(GameObject nouvMur)
-    {
-        nouvMur.gameObject.AddComponent(typeof(ChangeMaterialProperties));
-        _wallObject.Add(nouvMur);
-        //_wallObject[_wallObject.Count - 1].AddComponent(typeof(ChangeMaterialProperties));
-    }
+    [SerializeField] private LevelDisplayer level;
 
     public void TriggerShineColor(int _cptBPM)
     {
@@ -42,7 +22,18 @@ public class TileEffect : MonoBehaviour
 
         for (int i = 0; i < nb; i++)
         {
-          //  _wallObject[Random.Range(0, _wallObject.Count)].GetComponent<ChangeMaterialProperties>().GoWhite();
+            int x;
+            int y;
+            while (true) { 
+                x = Random.Range(0, LevelParser.mapWidth);
+                y = Random.Range(0, LevelParser.mapHeight);
+                if (level.displayTiles[x, y].type == TileType.Wall)
+                {
+                    break;
+                }
+            }
+            level.displayTiles[x,y].GetComponent<ChangeMaterialProperties>().GoWhite();
+            
         }
     }
 }
