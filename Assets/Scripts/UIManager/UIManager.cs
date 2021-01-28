@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -220,6 +220,7 @@ public class UIManager : MonoBehaviour
     //=========================Affichage du game over
     public void GameOver()
     {
+        SceneManager.LoadScene("Menu");
         if (_PacManNot == false)
         {
             UIGameOver.gameObject.SetActive(true); 

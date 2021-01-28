@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+
 public class GameManager : MonoBehaviour
 {
     [Header("Settings")]
