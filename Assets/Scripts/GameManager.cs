@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Settings")]
+    public float startOffset = 1f;
     public float timeTillUpdate = 0.5f;
     public float timeTillSpawn = 3f;
     [SerializeField] public int pacmanLife = 3;
@@ -23,6 +25,8 @@ public class GameManager : MonoBehaviour
     [Header("Internal States")]
     [SerializeField] private MoveDir currDirection = MoveDir.Up;
     [SerializeField] private bool isGame = false;
+    private InputDevice device;
+    private Vector2 inputStick;
 
     [Header("Chase Pattern")]
     private ChaseMode CurrentMode;
@@ -46,6 +50,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        device = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
         InitPacman();
         InitGhosts();
         score.InitScore();
@@ -86,14 +92,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        //float moveHorizontal = Input.GetAxis("Horizontal");
+        //float moveVertical = Input.GetAxis("Vertical");        
+        device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
 
-        if (moveVertical > .1) currDirection = MoveDir.Up;
-        else if (moveVertical < -.1) currDirection = MoveDir.Down;
+        if (inputStick.y > .1) currDirection = MoveDir.Up;
+        else if (inputStick.y < -.1) currDirection = MoveDir.Down;
 
-        if (moveHorizontal > .1) currDirection = MoveDir.Right;
-        else if (moveHorizontal < -.1) currDirection = MoveDir.Left;
+        if (inputStick.x > .1) currDirection = MoveDir.Right;
+        else if (inputStick.x < -.1) currDirection = MoveDir.Left;
 
         if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
     }
@@ -118,6 +125,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateGameLogic()
     {
+        yield return new WaitForSecondsRealtime(startOffset);
+
         while (isGame)
         {
             //Gameloop and update logic

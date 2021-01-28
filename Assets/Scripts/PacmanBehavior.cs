@@ -105,13 +105,8 @@ public class PacmanBehavior : MonoBehaviour
     public bool EnnemyCollide(Vector2 ennemyPos)
     {
         if (new Vector2((int)ennemyPos.x, (int)ennemyPos.y) == new Vector2((int)position.x, (int)position.y))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+             return true;
+        else return false;
     }
 
     void OnCollisionEnter(Collision collision)

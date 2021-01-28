@@ -44,15 +44,4 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         objectMaterial.SetColor("_EmissionColor", originalEmissionColor);
     }
-
-    /*
-    private IEnumerator SmoothResetColor()
-    {
-
-        Color whiteColor = Color.white * 2;
-        while () { 
-            objectMaterial.SetColor("_EmissionColor", Color.Lerp(whiteColor, originalEmissionColor, 0.1F));
-            yield return new WaitForSeconds(0.1F);
-        }
-    }*/
 }

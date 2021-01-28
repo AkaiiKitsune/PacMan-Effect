@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Pacman Parsed.unity
+    guid: 09ed02d894ca81a4092f3674c49f7063
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a91cee0738a8bea489d99f325126bbd5,
+      type: 2}
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: ef926654154eeb54da074b7f6c9a076b,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3a7e2b7a52c4db04e848576f50ab4a1f,
+      type: 2}

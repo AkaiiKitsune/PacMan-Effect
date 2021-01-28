@@ -18,7 +18,7 @@ public class LevelDisplayer : MonoBehaviour
     public static float size = .7f;
 
     [Header("UI and Effect")]
-    [SerializeField] private TileEffect TileEffect;
+    [SerializeField] private TileEffect tileEffect;
     [SerializeField] private UIManager UIManager;
 
     public void DisplayLevel()
@@ -34,7 +34,9 @@ public class LevelDisplayer : MonoBehaviour
                 //Instantiate and setup the tile.
                 Transform temp = Instantiate(mapMatrix.mapMatrix[x, y].currentBlock, new Vector3(tempx, tempy, 0), Quaternion.identity);
                 temp.gameObject.AddComponent<TileDebug>().Init(mapMatrix.mapMatrix[x, y]);
-                if (mapMatrix.mapMatrix[x, y].type == TileType.Wall) { temp.gameObject.AddComponent<ChangeMaterialProperties>(); }
+                
+                if (mapMatrix.mapMatrix[x, y].type == TileType.Wall) temp.gameObject.AddComponent<ChangeMaterialProperties>();
+                
                 temp.name = mapMatrix.mapMatrix[x, y].index.ToString();
                 temp.transform.parent = transform;
                 temp.localScale *= size;
@@ -48,5 +50,7 @@ public class LevelDisplayer : MonoBehaviour
         }
 
         this.transform.localRotation = origin.rotation;
+
+        tileEffect.Init();
     }
 }

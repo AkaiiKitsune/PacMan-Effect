@@ -61,15 +61,4 @@ public class InstantiateObjectsInLine : MonoBehaviour
         scaleValues = scales;
     }
 
-    //il est appeler depuis le system d'évènement de AudioSync
-    public void MakeObjectShine(int index)
-    {
-        lineOfObjects[index].GetComponent<ChangeMaterialProperties>().GoWhite();
-    }
-
-    //Même chose que audessus
-    public void ResetObjectColor(int index)
-    {
-        lineOfObjects[index].GetComponent<ChangeMaterialProperties>().ResetColor();
-    }
 }

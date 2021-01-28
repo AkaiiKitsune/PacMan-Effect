@@ -5,35 +5,22 @@ using UnityEngine;
 public class TileEffect : MonoBehaviour
 {
     [SerializeField] private LevelDisplayer level;
+    [SerializeField] private List<ChangeMaterialProperties> tiles = new List<ChangeMaterialProperties>();
+    [SerializeField] private int nb;
+
+    public void Init()
+    {
+        for (int x = 0; x < LevelParser.mapWidth; x++)
+            for (int y = 0; y < LevelParser.mapHeight; y++)
+                if (level.displayTiles[x, y].type == TileType.Wall)
+                    tiles.Add(level.displayTiles[x, y].GetComponent<ChangeMaterialProperties>());
+    }
 
     public void TriggerShineColor(int _cptBPM)
     {
-        int nb;
-
         if (_cptBPM % 8 == 0)
-        {
-            nb = 90;
-        }
-        else
-        {
-            nb = 10;
-        }
-
-
-        for (int i = 0; i < nb; i++)
-        {
-            int x;
-            int y;
-            while (true) { 
-                x = Random.Range(0, LevelParser.mapWidth);
-                y = Random.Range(0, LevelParser.mapHeight);
-                if (level.displayTiles[x, y].type == TileType.Wall)
-                {
-                    break;
-                }
-            }
-            level.displayTiles[x,y].GetComponent<ChangeMaterialProperties>().GoWhite();
-            
-        }
+             nb = 90;
+        else nb = 10;
+        for (int i = 0; i < nb; i++)tiles[Random.Range(0, tiles.Count)].GoWhite();
     }
 }
