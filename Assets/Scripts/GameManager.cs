@@ -96,11 +96,11 @@ public class GameManager : MonoBehaviour
         //float moveVertical = Input.GetAxis("Vertical");        
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
 
-        if (inputStick.y > .1) currDirection = MoveDir.Up;
-        else if (inputStick.y < -.1) currDirection = MoveDir.Down;
+        if (inputStick.y > .15) currDirection = MoveDir.Up;
+        else if (inputStick.y < -.15) currDirection = MoveDir.Down;
 
-        if (inputStick.x > .1) currDirection = MoveDir.Right;
-        else if (inputStick.x < -.1) currDirection = MoveDir.Left;
+        if (inputStick.x > .15) currDirection = MoveDir.Right;
+        else if (inputStick.x < -.15) currDirection = MoveDir.Left;
 
         if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
     }
