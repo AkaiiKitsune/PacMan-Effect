@@ -6,7 +6,6 @@ public class ChangeMaterialProperties : MonoBehaviour
 {
     //Cette fonction s'éxecute sur le Game Object
     Material objectMaterial;
-    public bool mustGoWhite = false;
     Color originalEmissionColor;
 
     [SerializeField] private float fadeSpeed = 0.05F;
@@ -32,7 +31,6 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         
         Color whiteColor = Color.white * 2;
-
         objectMaterial.SetColor("_EmissionColor", whiteColor);
         fade = 1;
     }
