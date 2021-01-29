@@ -32,14 +32,10 @@ public class ScoreManager : MonoBehaviour
             UIManager.GetProgression();
             power.SuperPacman();
         }
-
-
     }
 
-    public int ShowScore ()
-    {
-        return score;
-    }
+    public int ShowScore () => score;
+    
     
    
 }

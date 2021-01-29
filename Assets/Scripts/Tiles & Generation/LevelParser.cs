@@ -10,7 +10,8 @@ public class LevelParser : MonoBehaviour
     [Header("Map")]
     public TileObject[,] mapMatrix = new TileObject[mapWidth, mapHeight];
     private char[] _mapContentString = null;
-    [SerializeField] private TextAsset _maps;
+    [SerializeField] private List<TextAsset> _maps;
+    [SerializeField] private int mapIndex;
     public LevelDisplayer displayer;
 
     [Header("Blocks")]
@@ -46,8 +47,9 @@ public class LevelParser : MonoBehaviour
 
     public void InitLevel()
     {
+        mapIndex = Random.Range(0, _maps.Count);
         //Initialising the map character array to be parsed
-        _mapContentString = _maps.text.ToCharArray();
+        _mapContentString = _maps[mapIndex].text.ToCharArray();
 
         //For each tile in the matrix...
         for (int y = 0; y < mapHeight; y++)
@@ -94,6 +96,8 @@ public class LevelParser : MonoBehaviour
                 _type = TileType.Air;
                 break;
         }
+
+        if (index == 349 || index == 350) _type = TileType.Outside; //Makes ghost exit outside blocks
 
         return new TileObject(index, new Vector2(x, y), _type, listBlocks, this);
     }

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: a451f5244fd54b44993a87ea3182bf76
+  - enabled: 1
     path: Assets/Scenes/Pacman Parsed.unity
     guid: 09ed02d894ca81a4092f3674c49f7063
   m_configObjects:

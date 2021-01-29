@@ -180,9 +180,22 @@ public class GameManager : MonoBehaviour
         for(int i=0; i<ChaseModes.Count; i++)
         {
             CurrentMode = ChaseModes[i];
+
+            while(power.IsPacmanSuper()) yield return null;
+
             yield return new WaitForSecondsRealtime(ChaseTime[i]);
         }
-        CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
+
+        while (true)
+        {
+            CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
+
+            while (!power.IsPacmanSuper()) yield return null;//Fix : Eating supers sometimes prevented ghosts to switch back to chase mode, this avoids that scenario
+            while (power.IsPacmanSuper()) yield return null; 
+
+            yield return new WaitForEndOfFrame(); 
+        }
+
     }
     #endregion
 }

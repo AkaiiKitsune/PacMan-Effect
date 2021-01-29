@@ -35,13 +35,5 @@ public class ChangeMaterialProperties : MonoBehaviour
 
         objectMaterial.SetColor("_EmissionColor", whiteColor);
         fade = 1;
-        
-        //StartCoroutine(SmoothResetColor());
-    }
-
-    //Permet de Reset la couleur quand on appele la fonction
-    public void ResetColor()
-    {
-        objectMaterial.SetColor("_EmissionColor", originalEmissionColor);
     }
 }

@@ -191,16 +191,13 @@ public class UIManager : MonoBehaviour
     {
         _progressionMax = 0;
         _progression = 0;
-        for (int y = 0; y < LevelParser.mapHeight; y++)
-        {
             for (int x = 0; x < LevelParser.mapWidth; x++)
-            {
-                if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super)
-                {
-                    _progressionMax++;
-                }
-            }
-        }
+                for (int y = 0; y < LevelParser.mapHeight; y++)
+                    if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super)
+                        _progressionMax++;
+                
+            
+        
     }
     //=========================Récupération des parmètres de progression du niveau
     public void GetProgression()
@@ -214,6 +211,8 @@ public class UIManager : MonoBehaviour
     {
         float progresse = (float)_progression / (float)_progressionMax;
         CercleProgres.fillAmount = progresse;
+
+        if(_progression >= _progressionMax) SceneManager.LoadScene("Menu");
     }
     #endregion
 

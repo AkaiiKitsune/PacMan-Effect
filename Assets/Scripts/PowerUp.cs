@@ -21,14 +21,15 @@ public class PowerUp : MonoBehaviour
 
     public void SuperPacman()
     {
-        superPac = true;
         StartCoroutine(NotSuperPacman());
     }
 
     IEnumerator NotSuperPacman()
     {
+        superPac = true;
         yield return new WaitForSecondsRealtime(5f);
         superPac = false;
+
     }
         
     public bool IsPacmanSuper ()
