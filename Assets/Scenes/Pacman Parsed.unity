@@ -2266,7 +2266,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730014615}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
@@ -2725,6 +2725,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapMatrix: {fileID: 2066316458}
   origin: {fileID: 1744171253}
+  listWall:
+  - {fileID: 981103851058773985, guid: e13a06969b18742469e62c3931fa7e83, type: 3}
+  - {fileID: 3817897964109305361, guid: e6cd3c789fc28614d8da5f4afcff0d33, type: 3}
+  - {fileID: 7322710694083566026, guid: 9c21ebc3103008645970f66940b75f0b, type: 3}
+  - {fileID: 864293496617307560, guid: b05b7e13ae72f594990540dd5c5972c3, type: 3}
+  - {fileID: 3583818350546367307, guid: fc87654e74e18bb4390c28391be97ba8, type: 3}
   tileEffect: {fileID: 2066316459}
   UIManager: {fileID: 406499300}
 --- !u!114 &2066316458
