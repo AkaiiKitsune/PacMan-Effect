@@ -98,6 +98,7 @@ public class LevelParser : MonoBehaviour
         }
 
         if (index == 349 || index == 350) _type = TileType.Outside; //Makes ghost exit outside blocks
+        if (index == 401 || index == 410) _type = TileType.Fruit; //Fruit Spawn
 
         return new TileObject(index, new Vector2(x, y), _type, listBlocks, this);
     }

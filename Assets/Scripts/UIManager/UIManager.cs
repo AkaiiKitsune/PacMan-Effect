@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("Gestion du score")]
     public TextMeshProUGUI TextScore;
     public TextMeshProUGUI TextHighScore;
+    [SerializeField] private ScoreManager ScoreManager;
 
 
     [Header("gestion des pop up")]
@@ -43,12 +44,6 @@ public class UIManager : MonoBehaviour
     public bool _test = false;
 
 
-    //========================= Start is called before the first frame update
-    void Start()
-    {
-        TextScore.text = AddPoint(0);
-        TextHighScore.text = AddPoint(1200);
-    }
 
     //=========================Il sert pour le Debug 
     private void Update()

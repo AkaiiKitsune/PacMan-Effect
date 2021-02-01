@@ -42,7 +42,7 @@ public class LevelDisplayer : MonoBehaviour
                 temp.gameObject.AddComponent<TileDebug>().Init(mapMatrix.mapMatrix[x, y]);
                 
                 if (mapMatrix.mapMatrix[x, y].type == TileType.Wall) temp.gameObject.AddComponent<ChangeMaterialProperties>();
-                
+                if (mapMatrix.mapMatrix[x, y].type == TileType.Fruit) temp.gameObject.transform.Rotate(0.0f, 0.0f, 180.0f);
 
                 temp.name = mapMatrix.mapMatrix[x, y].index.ToString();
                 temp.transform.parent = transform;

@@ -298,6 +298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TextScore: {fileID: 871844381}
   TextHighScore: {fileID: 1361860509}
+  ScoreManager: {fileID: 1904630988}
   TexteVolant: {fileID: 3724856368376648604, guid: b32ca79dc4d9df84c8d476f12f57bf5e,
     type: 3}
   ViePacMan: {fileID: 7411245835877911158, guid: 23d53111c36a1aa40ac46c6f124ed67f,
@@ -3067,6 +3068,7 @@ MonoBehaviour:
   level: {fileID: 2066316458}
   power: {fileID: 2115141167}
   score: 0
+  highScore: 0
   UIManager: {fileID: 406499300}
 --- !u!4 &1904630989
 Transform:
@@ -3386,6 +3388,7 @@ MonoBehaviour:
   - {fileID: 4019248449540629614, guid: a06a28bc49816dc4caa38b4a18bdbd35, type: 3}
   - {fileID: 4631655885302041404, guid: 5b76e0f9a02a7494bbf65d59b1ece1eb, type: 3}
   - {fileID: 6155894026123569664, guid: 3446eb6f48209c140a3b04794314db8b, type: 3}
+  - {fileID: 7312572470611699325, guid: 0a6d87ba8bf1e434bb5fed6b12bae752, type: 3}
   pacmanSpawn: {x: 0, y: 0}
 --- !u!114 &2066316459
 MonoBehaviour:

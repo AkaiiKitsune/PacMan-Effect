@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
         else if (inputStick.x < -.15) currDirection = MoveDir.Left;
 
         if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
+
     }
 
     #region Game Logic
@@ -138,23 +139,27 @@ public class GameManager : MonoBehaviour
 
             //Check if pacman collide an ennemy
                 foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
-            
-                if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
-                {
-                    pacman.colliding = false;
-                    pacman.lastDir = MoveDir.Up;
-                    pacmanLife -= 1;
-                    UIManager.Touch();
-                    pacman.Spawn();
 
-                    GhostRespawn();
-                }
-                else if (pacman.colliding && power.IsPacmanSuper()) { 
-                    Debug.Log(pacman.collideName);
-                    GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
-                }
-                else if (pacman.colliding && pacmanLife == 0) UIManager.GameOver();
-                
+            if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
+            {
+                pacman.colliding = false;
+                pacman.lastDir = MoveDir.Up;
+                pacmanLife -= 1;
+                UIManager.Touch();
+                pacman.Spawn();
+
+                GhostRespawn();
+            }
+            else if (pacman.colliding && power.IsPacmanSuper())
+            {
+                Debug.Log(pacman.collideName);
+                GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
+            }
+            else if (pacman.colliding && pacmanLife == 0)
+            {
+                score.SaveScore();
+                UIManager.GameOver();
+            }
                    
                 
 
