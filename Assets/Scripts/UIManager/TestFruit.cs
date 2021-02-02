@@ -20,7 +20,7 @@ public class TestFruit : MonoBehaviour
     {
         if (_touchPowerUp == true)
         {
-            UI.AddMultiPoint(PowerUp);
+            UI.AddMultiPoint();
             _touchPowerUp = false;
         }
 

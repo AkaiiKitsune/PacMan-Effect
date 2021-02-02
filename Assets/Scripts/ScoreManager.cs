@@ -46,6 +46,7 @@ public class ScoreManager : MonoBehaviour
             score += 100;
             UIManager.FloatingText(PacMan,"+" + 100.ToString(), Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
+            UIManager.AddMultiPoint();
             UIManager.GetProgression();
         }
         if (score > highScore)

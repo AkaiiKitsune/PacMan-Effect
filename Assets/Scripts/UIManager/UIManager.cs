@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
 
     [Header("affichage de multiplicateur")]
     private List<GameObject> MultiPoint = new List<GameObject>();
+    [SerializeField] private GameObject fruit;
 
 
     [Header("affichage du power up")]
@@ -97,7 +98,6 @@ public class UIManager : MonoBehaviour
             ParticleManager.ParticulePacMan(Pv[Pv.Count - 1].transform);
             Destroy(Pv[Pv.Count - 1]);
             Pv.RemoveAt(Pv.Count - 1);
-            DestroyFruits();
             PlusDePower();
             return true;
         }
@@ -109,7 +109,7 @@ public class UIManager : MonoBehaviour
     #region Multiplicateurs
     //=========================Gestion de l'affichage des multiplicateurs.
     //Addition d'un fruit multiplicateur
-    public void AddMultiPoint(GameObject fruit)
+    public void AddMultiPoint()
     {
         if (MultiPoint.Count < 5)
         {
@@ -146,14 +146,14 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Supression des multiplicateur
-    public void DestroyFruits()
+    /*public void DestroyFruits()
     {
         while (MultiPoint.Count > 0)
         {
             Destroy(MultiPoint[MultiPoint.Count - 1]);
             MultiPoint.RemoveAt(MultiPoint.Count - 1);
         }
-    }
+    }*/
     #endregion
 
     #region Power Up
