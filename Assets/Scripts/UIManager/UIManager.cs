@@ -70,7 +70,7 @@ public class UIManager : MonoBehaviour
     //=========================Gestion des textes
     public void FloatingText(Transform instiator, string content, Color couleur)
     {
-        var text = Instantiate(TexteVolant, instiator.position, Quaternion.identity, transform);
+        var text = Instantiate(TexteVolant, new Vector3(instiator.position.x, instiator.position.y + 1, instiator.position.z), Quaternion.identity, transform);
         text.GetComponent<TextMesh>().text = content;
         text.GetComponent<TextMesh>().color = couleur;
     }
