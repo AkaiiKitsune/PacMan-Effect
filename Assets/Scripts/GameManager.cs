@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
 
@@ -24,9 +25,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Internal States")]
     [SerializeField] private MoveDir currDirection = MoveDir.Up;
-    [SerializeField] private bool isGame = false;
+    [SerializeField] public static bool isGame = false;
     private InputDevice device;
     private Vector2 inputStick;
+    private bool exitButton;
     public bool triggerUpdate = false;
 
     [Header("Chase Pattern")]
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Score & PowerUp")]
     [SerializeField] private ScoreManager score;
-    [SerializeField] private PowerUp power;
+    [SerializeField] public PowerUp power;
 
     [Header("UI")]
     [SerializeField] private UIManager UIManager;
@@ -89,16 +91,17 @@ public class GameManager : MonoBehaviour
 
 
     private void Update()
-    {
-        //float moveHorizontal = Input.GetAxis("Horizontal");
-        //float moveVertical = Input.GetAxis("Vertical");        
+    {      
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
+        device.TryGetFeatureValue(CommonUsages.secondaryButton, out exitButton);
 
-        if (inputStick.y > .15) currDirection = MoveDir.Up;
-        else if (inputStick.y < -.15) currDirection = MoveDir.Down;
+        if (inputStick.y > .4) currDirection = MoveDir.Up;
+        else if (inputStick.y < -.4) currDirection = MoveDir.Down;
 
-        if (inputStick.x > .15) currDirection = MoveDir.Right;
-        else if (inputStick.x < -.15) currDirection = MoveDir.Left;
+        if (inputStick.x > .4) currDirection = MoveDir.Right;
+        else if (inputStick.x < -.4) currDirection = MoveDir.Left;
+
+        if(exitButton) SceneManager.LoadScene("Menu");
     }
 
     #region Game Logic
@@ -121,11 +124,16 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateGameLogic()
     {
+
         while (isGame)
         {
             //Gameloop and update logic
             // Debug.Log("TICK : " + Time.time);
-            if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Frighten;
+            if (power.IsPacmanSuper())
+            {
+                AudioManager.PlaySound("fuite");
+                CurrentMode = ChaseMode.Frighten;
+            }
             //Check if pacman collide an ennemy
             foreach (GhostBehavior ghost in ghostPrefabs)
             {
@@ -136,9 +144,9 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-
             if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
             {
+                AudioManager.PlaySound("death");
                 pacman.colliding = false;
                 pacman.lastDir = MoveDir.Up;
                 pacmanLife -= 1;
@@ -149,19 +157,34 @@ public class GameManager : MonoBehaviour
             }
             else if (pacman.colliding && power.IsPacmanSuper())
             {
-                Debug.Log(pacman.collideName);
-                GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
+                pacman.colliding = false;
+                GhostBehavior closest = ghostPrefabs[0];
+                float distance = 100f;
+                foreach(GhostBehavior ghost in ghostPrefabs)
+                {
+                    if(Vector2.Distance(ghost.position, pacman.position) < distance)
+                    {
+                        closest = ghost;
+                        distance = Vector2.Distance(ghost.position, pacman.position);
+                        Debug.Log("Closest is : " + closest.name);
+                    }
+                }
+                closest.Spawn();
+                AudioManager.PlaySound("chomp");
             }
             else if (pacman.colliding && pacmanLife == 0)
             {
+                pacman.colliding = false;
+                AudioManager.PlaySound("death");
                 score.SaveScore();
                 UIManager.GameOver();
+                isGame = false;
             }
 
             //Update Pacman
             pacman.Move(currDirection);
 
-
+            pacman.colliding = false;
 
             //Wait timeTillUpdate seconds till next update cycle
             while (triggerUpdate == false)
@@ -184,11 +207,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnGhostsInOrder());
     }
 
-    public bool AreGhostsFrightened()
-    {
-        if (CurrentMode == ChaseMode.Frighten) return true;
-        else return false;
-    }
     
     IEnumerator UpdateChaseLogic()
     {
@@ -206,11 +224,10 @@ public class GameManager : MonoBehaviour
             CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
 
             while (!power.IsPacmanSuper()) yield return null;//Fix : Eating supers sometimes prevented ghosts to switch back to chase mode, this avoids that scenario
-            while (power.IsPacmanSuper()) yield return null; 
+            while (power.IsPacmanSuper()) yield return null;
 
-            yield return new WaitForEndOfFrame(); 
+            yield return new WaitForEndOfFrame();
         }
-
     }
     #endregion
 

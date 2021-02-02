@@ -27,7 +27,7 @@ public class TileEffect : MonoBehaviour
 
         foreach(GhostBehavior ghost in manager.ghostPrefabs)
         {
-            if (manager.AreGhostsFrightened())
+            if (manager.power.IsPacmanSuper())
             {
                 ghost.gameObject.GetComponent<ChangeMaterialProperties>().GhostGoWhite();
             }

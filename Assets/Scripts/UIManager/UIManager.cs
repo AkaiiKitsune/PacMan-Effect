@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,10 +11,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI TextScore;
     public TextMeshProUGUI TextHighScore;
     [SerializeField] private ScoreManager ScoreManager;
-
-
-    [Header("gestion des pop up")]
-    [SerializeField] private GameObject TexteVolant;
 
 
     [Header("affichage de la Vie")]
@@ -25,6 +22,7 @@ public class UIManager : MonoBehaviour
 
     [Header("affichage de multiplicateur")]
     private List<GameObject> MultiPoint = new List<GameObject>();
+    [SerializeField] private GameObject fruit;
 
 
     [Header("affichage du power up")]
@@ -39,11 +37,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int _progression;      //pac gomme manger
 
     [Header("gameover")]
-    [SerializeField] private Canvas UIGameOver;
-    private bool _PacManNot = false;
-
-    //Debug Log
-    public bool _test = false;
+    [SerializeField] private GameObject UIGameOver;
+    [SerializeField] private GameObject UIWin;
 
 
 
@@ -55,7 +50,6 @@ public class UIManager : MonoBehaviour
     //=========================Système d'adition de point    
     public string AddPoint(int score)
     {
-        Debug.Log(score.ToString());
         int limit = 100000;
         string zero = "";
         // tant que le score sera inférieur a limit, zero aura un 0 de plus et limit sera divisée par 10 à chaque fois jusqu'à que la condition soit fausse
@@ -68,12 +62,6 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Gestion des textes
-    public void FloatingText(Transform instiator, string content, Color couleur)
-    {
-        var text = Instantiate(TexteVolant, new Vector3(instiator.position.x, instiator.position.y + 1, instiator.position.z), Quaternion.identity, transform);
-        text.GetComponent<TextMesh>().text = content;
-        text.GetComponent<TextMesh>().color = couleur;
-    }
 
     #region Vie PacMan
     //=========================Initialisation de l'affichage de la vie
@@ -97,7 +85,6 @@ public class UIManager : MonoBehaviour
             ParticleManager.ParticulePacMan(Pv[Pv.Count - 1].transform);
             Destroy(Pv[Pv.Count - 1]);
             Pv.RemoveAt(Pv.Count - 1);
-            DestroyFruits();
             PlusDePower();
             return true;
         }
@@ -109,7 +96,7 @@ public class UIManager : MonoBehaviour
     #region Multiplicateurs
     //=========================Gestion de l'affichage des multiplicateurs.
     //Addition d'un fruit multiplicateur
-    public void AddMultiPoint(GameObject fruit)
+    public void AddMultiPoint()
     {
         if (MultiPoint.Count < 5)
         {
@@ -146,14 +133,14 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Supression des multiplicateur
-    public void DestroyFruits()
+    /*public void DestroyFruits()
     {
         while (MultiPoint.Count > 0)
         {
             Destroy(MultiPoint[MultiPoint.Count - 1]);
             MultiPoint.RemoveAt(MultiPoint.Count - 1);
         }
-    }
+    }*/
     #endregion
 
     #region Power Up
@@ -184,7 +171,7 @@ public class UIManager : MonoBehaviour
         _progression = 0;
             for (int x = 0; x < LevelParser.mapWidth; x++)
                 for (int y = 0; y < LevelParser.mapHeight; y++)
-                    if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super)
+                    if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super || level.displayTiles[x, y].type == TileType.Fruit)
                         _progressionMax++;
                 
             
@@ -203,23 +190,24 @@ public class UIManager : MonoBehaviour
         float progresse = (float)_progression / (float)_progressionMax;
         CercleProgres.fillAmount = progresse;
 
-        if(_progression >= _progressionMax) SceneManager.LoadScene("Menu");
+        if (_progression >= _progressionMax) {
+            UIWin.SetActive(true);
+            StartCoroutine(LoadDelay());
+        }
     }
     #endregion
 
     //=========================Affichage du game over
     public void GameOver()
     {
+        UIGameOver.SetActive(true);
+        StartCoroutine(LoadDelay());
+    }
+
+    IEnumerator LoadDelay()
+    {
+        GameManager.isGame = false;
+        yield return new WaitForSecondsRealtime(3f);
         SceneManager.LoadScene("Menu");
-        if (_PacManNot == false)
-        {
-            UIGameOver.gameObject.SetActive(true); 
-            _PacManNot = true;
-        }
-        else
-        {
-            UIGameOver.gameObject.SetActive(false);
-            _PacManNot = false;
-        }
     }
 }

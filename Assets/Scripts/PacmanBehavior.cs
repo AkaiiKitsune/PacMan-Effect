@@ -21,11 +21,13 @@ public class PacmanBehavior : MonoBehaviour
     [SerializeField] public MoveDir lastDir;
     [SerializeField] public bool colliding;
     [SerializeField] public string collideName;
+
     
 
     [Header("Settings")]
     [SerializeField] public float Speed = 0.7f;
     [SerializeField] public float SpeedMultiplicator = 0.2f;
+    [SerializeField] public bool randomMove = false;
 
     [Header("Score Manager")]
     [SerializeField] public ScoreManager score;
@@ -43,12 +45,14 @@ public class PacmanBehavior : MonoBehaviour
     //Handle move logic
     public void Move(MoveDir dir)
     {
-        if (position.x <= 0 && dir == MoveDir.Left)
+        if (randomMove) dir = (MoveDir)Random.Range(0, 4); //Debug only
+
+        if (position.x <= 0 && dir != MoveDir.Right)
         {
             position.x = LevelParser.mapWidth - 1;
             UpdatePosition();
         }
-        else if (position.x >= LevelParser.mapWidth - 1 && dir == MoveDir.Right)
+        else if (position.x >= LevelParser.mapWidth - 1 && dir != MoveDir.Left)
         {
             position.x = 0;
             UpdatePosition();
@@ -58,19 +62,36 @@ public class PacmanBehavior : MonoBehaviour
             switch (dir)
             {
                 case MoveDir.Up:
-                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourUp.type != TileType.Outside) lastDir = dir;
+                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourUp.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourUp.type != TileType.Outside)
+                    {
+                        this.gameObject.transform.rotation = Quaternion.Euler(-180f, 90f, -90f);
+                        lastDir = dir;
+                    }
+                        
                     break;
 
                 case MoveDir.Down:
-                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourDown.type != TileType.Outside) lastDir = dir;
+                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourDown.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourDown.type != TileType.Outside)
+                    {
+                        this.gameObject.transform.rotation = Quaternion.Euler(-360f, 90f, -90f);
+                        lastDir = dir;
+                    }
                     break;
 
                 case MoveDir.Left:
-                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourLeft.type != TileType.Outside) lastDir = dir;
+                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourLeft.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourLeft.type != TileType.Outside)
+                    {
+                        this.gameObject.transform.rotation = Quaternion.Euler(-270f, 90f, -90f);
+                        lastDir = dir;
+                    }
                     break;
 
                 case MoveDir.Right:
-                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourRight.type != TileType.Outside) lastDir = dir;
+                    if (level.mapMatrix[(int)position.x, (int)position.y].neighbourRight.type != TileType.Wall && level.mapMatrix[(int)position.x, (int)position.y - 1].neighbourRight.type != TileType.Outside)
+                    {
+                        this.gameObject.transform.rotation = Quaternion.Euler(-90f, 90f, -90f);
+                        lastDir = dir;
+                    }
                     break;
             }
 

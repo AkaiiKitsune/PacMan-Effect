@@ -26,26 +26,28 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore (TileType type, Transform PacMan)
     {
+        
         if (type == TileType.Ball)
         {
+            AudioManager.PlaySound("wakka");
             score += 10;
-            UIManager.FloatingText(PacMan,"+" + 10.ToString(),Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
         }
         else if (type == TileType.Super)
         {
+            AudioManager.PlaySound("wakka");
             score += 50;
-            UIManager.FloatingText(PacMan,"+" + 50.ToString(), Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
             power.SuperPacman();
         }
         else if (type == TileType.Fruit)
         {
+            AudioManager.PlaySound("wakka");
             score += 100;
-            UIManager.FloatingText(PacMan,"+" + 100.ToString(), Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
+            UIManager.AddMultiPoint();
             UIManager.GetProgression();
         }
         if (score > highScore)
