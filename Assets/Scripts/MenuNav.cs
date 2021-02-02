@@ -8,6 +8,7 @@ public class MenuNav : MonoBehaviour
     public int maxindex;
     private InputDevice device;
     private Vector2 inputStick;
+    private bool button;
     private bool trigger;
 
     // Start is called before the first frame update
@@ -21,7 +22,6 @@ public class MenuNav : MonoBehaviour
     void Update()
     {
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
-        device.TryGetFeatureValue(CommonUsages.primaryButton, out trigger);
 
         if (inputStick.y < -.15f)
         {
@@ -44,8 +44,10 @@ public class MenuNav : MonoBehaviour
                 GameObject.Find("Cursor").transform.position = position;
             }
         }
-        
-        if (trigger)
+
+        device.TryGetFeatureValue(CommonUsages.primaryButton, out button);
+        device.TryGetFeatureValue(CommonUsages.triggerButton, out trigger);
+        if (trigger || button)
         {
             if (index == 1)
             {

@@ -46,12 +46,12 @@ public class PacmanBehavior : MonoBehaviour
     {
         if (randomMove) dir = (MoveDir)Random.Range(0, 4); //Debug only
 
-        if (position.x <= 0 && dir == MoveDir.Left)
+        if (position.x <= 0 && dir != MoveDir.Right)
         {
             position.x = LevelParser.mapWidth - 1;
             UpdatePosition();
         }
-        else if (position.x >= LevelParser.mapWidth - 1 && dir == MoveDir.Right)
+        else if (position.x >= LevelParser.mapWidth - 1 && dir != MoveDir.Left)
         {
             position.x = 0;
             UpdatePosition();

@@ -49,7 +49,6 @@ public class UIManager : MonoBehaviour
     //=========================Système d'adition de point    
     public string AddPoint(int score)
     {
-        Debug.Log(score.ToString());
         int limit = 100000;
         string zero = "";
         // tant que le score sera inférieur a limit, zero aura un 0 de plus et limit sera divisée par 10 à chaque fois jusqu'à que la condition soit fausse

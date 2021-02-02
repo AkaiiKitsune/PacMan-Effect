@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
 
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isGame = false;
     private InputDevice device;
     private Vector2 inputStick;
+    private bool exitButton;
     public bool triggerUpdate = false;
 
     [Header("Chase Pattern")]
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Score & PowerUp")]
     [SerializeField] private ScoreManager score;
-    [SerializeField] private PowerUp power;
+    [SerializeField] public PowerUp power;
 
     [Header("UI")]
     [SerializeField] private UIManager UIManager;
@@ -93,12 +95,15 @@ public class GameManager : MonoBehaviour
         //float moveHorizontal = Input.GetAxis("Horizontal");
         //float moveVertical = Input.GetAxis("Vertical");        
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
+        device.TryGetFeatureValue(CommonUsages.secondaryButton, out exitButton);
 
         if (inputStick.y > .15) currDirection = MoveDir.Up;
         else if (inputStick.y < -.15) currDirection = MoveDir.Down;
 
         if (inputStick.x > .15) currDirection = MoveDir.Right;
         else if (inputStick.x < -.15) currDirection = MoveDir.Left;
+
+        if(exitButton) SceneManager.LoadScene("Menu");
     }
 
     #region Game Logic
@@ -121,6 +126,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateGameLogic()
     {
+
         while (isGame)
         {
             //Gameloop and update logic
@@ -149,11 +155,23 @@ public class GameManager : MonoBehaviour
             }
             else if (pacman.colliding && power.IsPacmanSuper())
             {
-                Debug.Log(pacman.collideName);
-                GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
+                pacman.colliding = false;
+                GhostBehavior closest = ghostPrefabs[0];
+                float distance = 100f;
+                foreach(GhostBehavior ghost in ghostPrefabs)
+                {
+                    if(Vector2.Distance(ghost.position, pacman.position) < distance)
+                    {
+                        closest = ghost;
+                        distance = Vector2.Distance(ghost.position, pacman.position);
+                        Debug.Log("Closest is : " + closest.name);
+                    }
+                }
+                closest.Spawn();
             }
             else if (pacman.colliding && pacmanLife == 0)
             {
+                pacman.colliding = false;
                 score.SaveScore();
                 UIManager.GameOver();
             }
@@ -161,7 +179,7 @@ public class GameManager : MonoBehaviour
             //Update Pacman
             pacman.Move(currDirection);
 
-
+            pacman.colliding = false;
 
             //Wait timeTillUpdate seconds till next update cycle
             while (triggerUpdate == false)

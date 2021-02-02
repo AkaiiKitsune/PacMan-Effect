@@ -50,13 +50,13 @@ public class LevelParser : MonoBehaviour
         mapIndex = Random.Range(1, 400);
         //Initialising the map character array to be parsed
 
-        int lowerBound = (mapIndex + (mapIndex * 868));
+        int lowerBound = (mapIndex + (mapIndex * 869));
 
         string map = _maps.text;
 
         Debug.Log("Map length : " + map.Length + ", lowerBound:" + lowerBound);
 
-        map = map.Substring(lowerBound, 868);
+        map = map.Substring(lowerBound, 869);
 
         _mapContentString = map.ToCharArray();
         
