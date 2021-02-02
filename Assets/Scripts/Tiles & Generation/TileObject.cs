@@ -7,7 +7,8 @@ public enum TileType
     Ball = 1, 
     Super = 2, 
     Air = 3, 
-    Outside = 4 
+    Outside = 4, 
+    Fruit = 5
 }
 
 public class TileObject

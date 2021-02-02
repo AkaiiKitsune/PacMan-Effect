@@ -27,7 +27,7 @@ public class PowerUp : MonoBehaviour
     IEnumerator NotSuperPacman()
     {
         superPac = true;
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(7f);
         superPac = false;
 
     }

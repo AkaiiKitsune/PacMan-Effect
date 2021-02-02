@@ -7,14 +7,13 @@ using UnityEngine.XR;
 public class GameManager : MonoBehaviour
 {
     [Header("Settings")]
-    public float startOffset = 1f;
     public float timeTillUpdate = 0.5f;
     public float timeTillSpawn = 3f;
     [SerializeField] public int pacmanLife = 3;
 
     [Header("Game Objects")]
     [SerializeField] private PacmanBehavior pacman;
-    [SerializeField] private List<GhostBehavior> ghostPrefabs;
+    [SerializeField] public List<GhostBehavior> ghostPrefabs;
 
     [Header("Levels")]
     [SerializeField] private int defaultSpawn = 0;
@@ -28,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isGame = false;
     private InputDevice device;
     private Vector2 inputStick;
+    public bool triggerUpdate = false;
 
     [Header("Chase Pattern")]
     private ChaseMode CurrentMode;
@@ -42,15 +42,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager UIManager;
 
     #region Initialisation
-    private void Awake()
+    private void Start()
     {
         //Level Generation and Level Display logic
         foreach (LevelParser level in levels) level.InitLevel();
         foreach (LevelDisplayer displayer in levelDisplayers) displayer.DisplayLevel();
-    }
 
-    private void Start()
-    {
         device = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
 
         InitPacman();
@@ -80,9 +77,9 @@ public class GameManager : MonoBehaviour
         {
             ghostPrefabs[i] = Instantiate(ghostPrefabs[i], levels[defaultSpawn].transform);
             ghostPrefabs[i].name = ghostPrefabs[i].type.ToString();
-            ghostPrefabs[i].transform.localPosition = new Vector3(ghostPrefabs[i].transform.localPosition.x, ghostPrefabs[i].transform.localPosition.y, ghostPrefabs[i].transform.localPosition.z - 1);
+            ghostPrefabs[i].transform.localPosition = new Vector3(ghostPrefabs[i].transform.localPosition.x, ghostPrefabs[i].transform.localPosition.y, ghostPrefabs[i].transform.localPosition.z - 1f);
             ghostPrefabs[i].target = pacman;
-
+            ghostPrefabs[i].gameObject.transform.Rotate(-90.0f, 0.0f, 0.0f);
             //Init pacman spawn coordinates
             ghostPrefabs[i].level = levels[defaultSpawn];
             ghostPrefabs[i].Spawn();
@@ -102,8 +99,6 @@ public class GameManager : MonoBehaviour
 
         if (inputStick.x > .15) currDirection = MoveDir.Right;
         else if (inputStick.x < -.15) currDirection = MoveDir.Left;
-
-        if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
     }
 
     #region Game Logic
@@ -117,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnGhostsInOrder()
     {
-        foreach(GhostBehavior ghost in ghostPrefabs)
+        foreach (GhostBehavior ghost in ghostPrefabs)
         {
             ghost.Spawned = true;
             yield return new WaitForSecondsRealtime(timeTillSpawn);
@@ -126,41 +121,55 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateGameLogic()
     {
-        yield return new WaitForSecondsRealtime(startOffset);
-
         while (isGame)
         {
             //Gameloop and update logic
-           // Debug.Log("TICK : " + Time.time);
+            // Debug.Log("TICK : " + Time.time);
+            if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Frighten;
+            //Check if pacman collide an ennemy
+            foreach (GhostBehavior ghost in ghostPrefabs)
+            {
+                ghost.ComputeNextMove(CurrentMode);
+                if( ghost.position == pacman.position)
+                {
+                    pacman.colliding = true;
+                }
+            }
+
+
+            if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
+            {
+                pacman.colliding = false;
+                pacman.lastDir = MoveDir.Up;
+                pacmanLife -= 1;
+                UIManager.Touch();
+                pacman.Spawn();
+
+                GhostRespawn();
+            }
+            else if (pacman.colliding && power.IsPacmanSuper())
+            {
+                Debug.Log(pacman.collideName);
+                GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
+            }
+            else if (pacman.colliding && pacmanLife == 0)
+            {
+                score.SaveScore();
+                UIManager.GameOver();
+            }
 
             //Update Pacman
             pacman.Move(currDirection);
 
-            //Check if pacman collide an ennemy
-                foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
-            
-                if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
-                {
-                    pacman.colliding = false;
-                    pacman.lastDir = MoveDir.Up;
-                    pacmanLife -= 1;
-                    UIManager.Touch();
-                    pacman.Spawn();
-
-                    GhostRespawn();
-                }
-                else if (pacman.colliding && power.IsPacmanSuper()) { 
-                    Debug.Log(pacman.collideName);
-                    GameObject.Find(pacman.collideName).GetComponent<GhostBehavior>().Spawn();
-                }
-                else if (pacman.colliding && pacmanLife == 0) UIManager.GameOver();
-                
-                   
-                
 
 
             //Wait timeTillUpdate seconds till next update cycle
-            yield return new WaitForSecondsRealtime(timeTillUpdate);
+            while (triggerUpdate == false)
+            {
+                yield return null;
+            }
+
+            triggerUpdate = false;
         }
     }
 
@@ -173,6 +182,12 @@ public class GameManager : MonoBehaviour
             ghost.Spawn();
         }
         StartCoroutine(SpawnGhostsInOrder());
+    }
+
+    public bool AreGhostsFrightened()
+    {
+        if (CurrentMode == ChaseMode.Frighten) return true;
+        else return false;
     }
     
     IEnumerator UpdateChaseLogic()
@@ -198,4 +213,9 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
+
+    public void Trigger(bool trigger)
+    {
+        triggerUpdate = trigger;
+    }
 }

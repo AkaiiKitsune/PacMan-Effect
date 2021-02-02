@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -28,6 +29,9 @@ public class PacmanBehavior : MonoBehaviour
 
     [Header("Score Manager")]
     [SerializeField] public ScoreManager score;
+
+    [Header("Animation PacMan")]
+    [SerializeField] private Shader PacManShader;
 
     //Handle setting position at spawn time
     public void Spawn()
@@ -98,7 +102,7 @@ public class PacmanBehavior : MonoBehaviour
 
     private void UpdateTile()
     {
-        score.AddScore(level.mapMatrix[(int)position.x, (int)position.y].type);
+        score.AddScore(level.mapMatrix[(int)position.x, (int)position.y].type, transform);
         level.mapMatrix[(int)position.x, (int)position.y].SetType(TileType.Air);
     }
 
@@ -120,6 +124,11 @@ public class PacmanBehavior : MonoBehaviour
         colliding = false;
     }
 
+    IEnumerator Death()
+    {
+
+        yield return new WaitForEndOfFrame();
+    }
 
     /// TODO Implement this hell
     private void ChangeTerrain(LevelParser levelToJumpTo) { }

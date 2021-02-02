@@ -5,6 +5,8 @@ using UnityEngine;
 public class TileEffect : MonoBehaviour
 {
     [SerializeField] private LevelDisplayer level;
+    [SerializeField] private GameManager manager;
+    [SerializeField] private ChangeMaterialProperties background;
     [SerializeField] private List<ChangeMaterialProperties> tiles = new List<ChangeMaterialProperties>();
     [SerializeField] private int nb;
 
@@ -22,5 +24,20 @@ public class TileEffect : MonoBehaviour
              nb = 90;
         else nb = 10;
         for (int i = 0; i < nb; i++)tiles[Random.Range(0, tiles.Count)].GoWhite();
+
+        foreach(GhostBehavior ghost in manager.ghostPrefabs)
+        {
+            if (manager.AreGhostsFrightened())
+            {
+                ghost.gameObject.GetComponent<ChangeMaterialProperties>().GhostGoWhite();
+            }
+        }
+        for (int i = 0; i < nb; i++)tiles[Random.Range(0, tiles.Count)].GoWhite();
+
+        if (_cptBPM % 16 == 0) background.GoWhite();
+        else if (_cptBPM % 2 == 0) background.GoDark();
+
+
+
     }
 }

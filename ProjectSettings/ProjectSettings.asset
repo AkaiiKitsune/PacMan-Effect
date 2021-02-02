@@ -23,7 +23,7 @@ PlayerSettings:
   m_SplashScreenAnimation: 1
   m_SplashScreenLogoStyle: 1
   m_SplashScreenDrawMode: 0
-  m_SplashScreenBackgroundAnimationZoom: 1
+  m_SplashScreenBackgroundAnimationZoom: 0.086
   m_SplashScreenLogoAnimationZoom: 1
   m_SplashScreenBackgroundLandscapeAspect: 1
   m_SplashScreenBackgroundPortraitAspect: 1
@@ -39,15 +39,18 @@ PlayerSettings:
     y: 0
     width: 1
     height: 1
-  m_SplashScreenLogos: []
-  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_SplashScreenLogos:
+  - logo: {fileID: 21300000, guid: 85a4034f45488dd4e850985592070810, type: 3}
+    duration: 2
+  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: 400c5f17dc9eb88459749255e31c2c05,
+    type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_StereoRenderingPath: 0
-  m_ActiveColorSpace: 0
+  m_ActiveColorSpace: 1
   m_MTRendering: 1
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
@@ -130,7 +133,8 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: -8343769934299030928, guid: 3a7e2b7a52c4db04e848576f50ab4a1f, type: 2}
+  - {fileID: 0}
+  - {fileID: 3432042946920789584, guid: 3a7e2b7a52c4db04e848576f50ab4a1f, type: 2}
   - {fileID: 11400000, guid: a91cee0738a8bea489d99f325126bbd5, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -352,7 +356,9 @@ PlayerSettings:
       m_Height: 36
       m_Kind: 1
       m_SubKind: 
-    - m_Textures: []
+    - m_Textures:
+      - {fileID: 2800000, guid: 400c5f17dc9eb88459749255e31c2c05, type: 3}
+      - {fileID: 2800000, guid: 400c5f17dc9eb88459749255e31c2c05, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2
@@ -367,7 +373,9 @@ PlayerSettings:
       m_Height: 216
       m_Kind: 2
       m_SubKind: 
-    - m_Textures: []
+    - m_Textures:
+      - {fileID: 0}
+      - {fileID: 2800000, guid: 400c5f17dc9eb88459749255e31c2c05, type: 3}
       m_Width: 162
       m_Height: 162
       m_Kind: 2
@@ -673,7 +681,8 @@ PlayerSettings:
   ps4IncludedModules: []
   ps4attribVROutputEnabled: 0
   monoEnv: 
-  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: 400c5f17dc9eb88459749255e31c2c05,
+    type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
   blurSplashScreenBackground: 1
   spritePackerPolicy: 

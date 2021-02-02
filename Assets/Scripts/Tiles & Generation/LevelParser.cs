@@ -10,7 +10,7 @@ public class LevelParser : MonoBehaviour
     [Header("Map")]
     public TileObject[,] mapMatrix = new TileObject[mapWidth, mapHeight];
     private char[] _mapContentString = null;
-    [SerializeField] private List<TextAsset> _maps;
+    [SerializeField] private TextAsset _maps;
     [SerializeField] private int mapIndex;
     public LevelDisplayer displayer;
 
@@ -45,12 +45,25 @@ public class LevelParser : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        mapIndex = Random.Range(1, 400);
+        //Initialising the map character array to be parsed
+
+        int lowerBound = (mapIndex + (mapIndex * 868));
+
+        string map = _maps.text;
+
+        Debug.Log("Map length : " + map.Length + ", lowerBound:" + lowerBound);
+
+        map = map.Substring(lowerBound, 868);
+
+        _mapContentString = map.ToCharArray();
+        
+    }
+
     public void InitLevel()
     {
-        mapIndex = Random.Range(0, _maps.Count);
-        //Initialising the map character array to be parsed
-        _mapContentString = _maps[mapIndex].text.ToCharArray();
-
         //For each tile in the matrix...
         for (int y = 0; y < mapHeight; y++)
             for (int x = 0; x < mapWidth; x++)
@@ -98,6 +111,7 @@ public class LevelParser : MonoBehaviour
         }
 
         if (index == 349 || index == 350) _type = TileType.Outside; //Makes ghost exit outside blocks
+        if (index == 401 || index == 410) _type = TileType.Fruit; //Fruit Spawn
 
         return new TileObject(index, new Vector2(x, y), _type, listBlocks, this);
     }
