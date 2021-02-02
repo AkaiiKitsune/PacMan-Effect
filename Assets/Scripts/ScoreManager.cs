@@ -26,14 +26,17 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore (TileType type, Transform PacMan)
     {
+        
         if (type == TileType.Ball)
         {
+            AudioManager.PlaySound("wakka");
             score += 10;
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
         }
         else if (type == TileType.Super)
         {
+            AudioManager.PlaySound("wakka");
             score += 50;
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
@@ -41,6 +44,7 @@ public class ScoreManager : MonoBehaviour
         }
         else if (type == TileType.Fruit)
         {
+            AudioManager.PlaySound("wakka");
             score += 100;
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.AddMultiPoint();

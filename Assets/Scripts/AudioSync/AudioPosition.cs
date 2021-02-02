@@ -23,7 +23,6 @@ public class AudioPosition : MonoBehaviour{
 
     void Start() { 
         musicSource = GetComponent<AudioSource>();
-        Debug.Log("Audio clip length : " + musicSource.clip.length);
     }
 
     // Update is called once per frame
