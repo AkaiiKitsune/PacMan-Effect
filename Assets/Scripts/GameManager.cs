@@ -95,11 +95,11 @@ public class GameManager : MonoBehaviour
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
         device.TryGetFeatureValue(CommonUsages.secondaryButton, out exitButton);
 
-        if (inputStick.y > .15) currDirection = MoveDir.Up;
-        else if (inputStick.y < -.15) currDirection = MoveDir.Down;
+        if (inputStick.y > .4) currDirection = MoveDir.Up;
+        else if (inputStick.y < -.4) currDirection = MoveDir.Down;
 
-        if (inputStick.x > .15) currDirection = MoveDir.Right;
-        else if (inputStick.x < -.15) currDirection = MoveDir.Left;
+        if (inputStick.x > .4) currDirection = MoveDir.Right;
+        else if (inputStick.x < -.4) currDirection = MoveDir.Left;
 
         if(exitButton) SceneManager.LoadScene("Menu");
     }
