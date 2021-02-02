@@ -15,7 +15,7 @@ public class ChangeMaterialProperties : MonoBehaviour
     void Awake()
     {
         objectMaterial = GetComponent<MeshRenderer>().materials[0];         //Récupère le matériau zéro pour pouvoir modifier la couleur 
-        originalEmissionColor = objectMaterial.GetColor("_EmissionColor");  //Permet de sauvegarder la couleur d'origine
+        originalEmissionColor = objectMaterial.GetColor("_BaseColor");  //Permet de sauvegarder la couleur d'origine
     }
 
     // Un Update... et il sert a rien ¯\_(ツ)_/¯
@@ -23,7 +23,7 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         fade -= fadeSpeed;
         Color whiteColor = Color.white * 2;
-        objectMaterial.SetColor("_EmissionColor", Color.Lerp(originalEmissionColor, whiteColor, fade));
+        objectMaterial.SetColor("_BaseColor", Color.Lerp(originalEmissionColor, whiteColor, fade));
     }
 
     //Permet de changer la couleur en blanc quand on appele la fonction
@@ -31,7 +31,7 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         
         Color whiteColor = Color.white * 2;
-        objectMaterial.SetColor("_EmissionColor", whiteColor);
+        objectMaterial.SetColor("_BaseColor", whiteColor);
         fade = 1;
     }
 }
