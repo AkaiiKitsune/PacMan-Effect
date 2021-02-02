@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -36,8 +37,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int _progression;      //pac gomme manger
 
     [Header("gameover")]
-    [SerializeField] private Canvas UIGameOver;
-    private bool _PacManNot = false;
+    [SerializeField] private GameObject UIGameOver;
+    [SerializeField] private GameObject UIWin;
 
 
 
@@ -170,7 +171,7 @@ public class UIManager : MonoBehaviour
         _progression = 0;
             for (int x = 0; x < LevelParser.mapWidth; x++)
                 for (int y = 0; y < LevelParser.mapHeight; y++)
-                    if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super)
+                    if (level.displayTiles[x, y].type == TileType.Ball || level.displayTiles[x, y].type == TileType.Super || level.displayTiles[x, y].type == TileType.Fruit)
                         _progressionMax++;
                 
             
@@ -189,23 +190,24 @@ public class UIManager : MonoBehaviour
         float progresse = (float)_progression / (float)_progressionMax;
         CercleProgres.fillAmount = progresse;
 
-        if(_progression >= _progressionMax) SceneManager.LoadScene("Menu");
+        if (_progression >= _progressionMax) {
+            UIWin.SetActive(true);
+            StartCoroutine(LoadDelay());
+        }
     }
     #endregion
 
     //=========================Affichage du game over
     public void GameOver()
     {
+        UIGameOver.SetActive(true);
+        StartCoroutine(LoadDelay());
+    }
+
+    IEnumerator LoadDelay()
+    {
+        GameManager.isGame = false;
+        yield return new WaitForSecondsRealtime(3f);
         SceneManager.LoadScene("Menu");
-        if (_PacManNot == false)
-        {
-            UIGameOver.gameObject.SetActive(true); 
-            _PacManNot = true;
-        }
-        else
-        {
-            UIGameOver.gameObject.SetActive(false);
-            _PacManNot = false;
-        }
     }
 }

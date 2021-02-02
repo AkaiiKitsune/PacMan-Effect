@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Internal States")]
     [SerializeField] private MoveDir currDirection = MoveDir.Up;
-    [SerializeField] private bool isGame = false;
+    [SerializeField] public static bool isGame = false;
     private InputDevice device;
     private Vector2 inputStick;
     private bool exitButton;
@@ -91,9 +91,7 @@ public class GameManager : MonoBehaviour
 
 
     private void Update()
-    {
-        //float moveHorizontal = Input.GetAxis("Horizontal");
-        //float moveVertical = Input.GetAxis("Vertical");        
+    {      
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputStick);
         device.TryGetFeatureValue(CommonUsages.secondaryButton, out exitButton);
 
@@ -142,7 +140,6 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-
             if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
             {
                 pacman.colliding = false;
@@ -174,6 +171,7 @@ public class GameManager : MonoBehaviour
                 pacman.colliding = false;
                 score.SaveScore();
                 UIManager.GameOver();
+                isGame = false;
             }
 
             //Update Pacman
@@ -202,11 +200,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnGhostsInOrder());
     }
 
-    public bool AreGhostsFrightened()
-    {
-        if (CurrentMode == ChaseMode.Frighten) return true;
-        else return false;
-    }
     
     IEnumerator UpdateChaseLogic()
     {

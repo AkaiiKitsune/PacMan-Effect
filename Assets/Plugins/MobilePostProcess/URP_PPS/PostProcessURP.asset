@@ -109,7 +109,7 @@ MonoBehaviour:
     BloomThreshold: 0.1
     BloomSoftness: 0
     LUT: 1
-    LutAmount: 0.4
+    LutAmount: 0.8
     SourceLut: {fileID: 2800000, guid: 3f6144a00aeb18e43b3370cb0b9f149b, type: 3}
     ImageFiltering: 1
     Color: {r: 1, g: 1, b: 1, a: 1}
@@ -119,7 +119,7 @@ MonoBehaviour:
     Exposure: 0.3
     Gamma: 0.06
     Sharpness: 0
-    ChromaticAberration: 1
+    ChromaticAberration: 0
     Offset: 0.1
     FishEyeDistortion: 0.2
     GlitchAmount: 0
