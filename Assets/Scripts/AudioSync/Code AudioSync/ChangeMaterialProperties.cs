@@ -24,6 +24,7 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
         fade -= fadeSpeed;
         objectMaterial.SetColor("_BaseColor", Color.Lerp(originalEmissionColor, colorToDisplay, fade));
+        objectMaterial.SetColor("_EmissionColor", Color.Lerp(originalEmissionColor, colorToDisplay, fade));
     }
 
     //Permet de changer la couleur en blanc quand on appele la fonction
@@ -31,14 +32,18 @@ public class ChangeMaterialProperties : MonoBehaviour
     {
 
         colorToDisplay = Color.white * 2;
-        objectMaterial.SetColor("_BaseColor", colorToDisplay);
         fade = 1;
     }
 
     public void GoDark()
     {
         colorToDisplay = Color.black;
-        objectMaterial.SetColor("_BaseColor", colorToDisplay);
+        fade = 1;
+    }
+
+    public void GhostGoWhite()
+    {
+        colorToDisplay = Color.white;
         fade = 1;
     }
 }

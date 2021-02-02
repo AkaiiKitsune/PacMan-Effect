@@ -63,6 +63,10 @@ public class GhostBehavior : MonoBehaviour
                     target = ScatterTarget(type);
                     break;
 
+                case ChaseMode.Frighten:
+                    target = ScatterTarget(type);
+                    break;
+
                 default:
                     target = position;
                     break;

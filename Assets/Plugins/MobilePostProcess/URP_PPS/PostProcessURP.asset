@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: PostProcessURP
   m_EditorClassIdentifier: 
   m_RendererFeatures:
-  - {fileID: -754972587007797143}
+  - {fileID: 0}
   m_RendererFeatureMap: 09e7fdb3a73f1091
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:

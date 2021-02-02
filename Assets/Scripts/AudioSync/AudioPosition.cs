@@ -54,5 +54,7 @@ public class AudioPosition : MonoBehaviour{
 
             eventBPM.Invoke(_cptBPM);
         }      
+
+
     }
 }

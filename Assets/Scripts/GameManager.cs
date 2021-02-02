@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Objects")]
     [SerializeField] private PacmanBehavior pacman;
-    [SerializeField] private List<GhostBehavior> ghostPrefabs;
+    [SerializeField] public List<GhostBehavior> ghostPrefabs;
 
     [Header("Levels")]
     [SerializeField] private int defaultSpawn = 0;
@@ -102,9 +102,6 @@ public class GameManager : MonoBehaviour
 
         if (inputStick.x > .15) currDirection = MoveDir.Right;
         else if (inputStick.x < -.15) currDirection = MoveDir.Left;
-
-        if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Scatter;
-
     }
 
     #region Game Logic
@@ -118,7 +115,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnGhostsInOrder()
     {
-        foreach(GhostBehavior ghost in ghostPrefabs)
+        foreach (GhostBehavior ghost in ghostPrefabs)
         {
             ghost.Spawned = true;
             yield return new WaitForSecondsRealtime(timeTillSpawn);
@@ -131,7 +128,7 @@ public class GameManager : MonoBehaviour
         {
             //Gameloop and update logic
             // Debug.Log("TICK : " + Time.time);
-
+            if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Frighten;
             //Check if pacman collide an ennemy
             foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
 
@@ -180,6 +177,12 @@ public class GameManager : MonoBehaviour
             ghost.Spawn();
         }
         StartCoroutine(SpawnGhostsInOrder());
+    }
+
+    public bool AreGhostsFrightened()
+    {
+        if (CurrentMode == ChaseMode.Frighten) return true;
+        else return false;
     }
     
     IEnumerator UpdateChaseLogic()
