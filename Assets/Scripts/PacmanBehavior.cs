@@ -26,6 +26,7 @@ public class PacmanBehavior : MonoBehaviour
     [Header("Settings")]
     [SerializeField] public float Speed = 0.7f;
     [SerializeField] public float SpeedMultiplicator = 0.2f;
+    [SerializeField] public bool randomMove = false;
 
     [Header("Score Manager")]
     [SerializeField] public ScoreManager score;
@@ -43,6 +44,8 @@ public class PacmanBehavior : MonoBehaviour
     //Handle move logic
     public void Move(MoveDir dir)
     {
+        if (randomMove) dir = (MoveDir)Random.Range(0, 4); //Debug only
+
         if (position.x <= 0 && dir == MoveDir.Left)
         {
             position.x = LevelParser.mapWidth - 1;

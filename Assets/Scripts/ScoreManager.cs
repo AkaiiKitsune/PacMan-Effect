@@ -29,14 +29,12 @@ public class ScoreManager : MonoBehaviour
         if (type == TileType.Ball)
         {
             score += 10;
-            UIManager.FloatingText(PacMan,"+" + 10.ToString(),Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
         }
         else if (type == TileType.Super)
         {
             score += 50;
-            UIManager.FloatingText(PacMan,"+" + 50.ToString(), Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.GetProgression();
             power.SuperPacman();
@@ -44,7 +42,6 @@ public class ScoreManager : MonoBehaviour
         else if (type == TileType.Fruit)
         {
             score += 100;
-            UIManager.FloatingText(PacMan,"+" + 100.ToString(), Color.yellow);
             UIManager.TextScore.text = UIManager.AddPoint(score);
             UIManager.AddMultiPoint();
             UIManager.GetProgression();

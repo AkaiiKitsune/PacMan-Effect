@@ -12,10 +12,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private ScoreManager ScoreManager;
 
 
-    [Header("gestion des pop up")]
-    [SerializeField] private GameObject TexteVolant;
-
-
     [Header("affichage de la Vie")]
     [SerializeField] private ParticleManager ParticleManager;
 
@@ -43,9 +39,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas UIGameOver;
     private bool _PacManNot = false;
 
-    //Debug Log
-    public bool _test = false;
-
 
 
     //=========================Il sert pour le Debug 
@@ -69,12 +62,6 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Gestion des textes
-    public void FloatingText(Transform instiator, string content, Color couleur)
-    {
-        var text = Instantiate(TexteVolant, new Vector3(instiator.position.x, instiator.position.y + 1, instiator.position.z), Quaternion.identity, transform);
-        text.GetComponent<TextMesh>().text = content;
-        text.GetComponent<TextMesh>().color = couleur;
-    }
 
     #region Vie PacMan
     //=========================Initialisation de l'affichage de la vie

@@ -131,4 +131,6 @@ MonoBehaviour:
   collideName: 
   Speed: 0.7
   SpeedMultiplicator: 0.2
+  randomMove: 1
   score: {fileID: 0}
+  PacManShader: {fileID: 0}
