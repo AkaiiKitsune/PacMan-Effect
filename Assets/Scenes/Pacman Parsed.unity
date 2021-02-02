@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -299,17 +299,15 @@ MonoBehaviour:
   TextScore: {fileID: 871844381}
   TextHighScore: {fileID: 1361860509}
   ScoreManager: {fileID: 1904630988}
-  TexteVolant: {fileID: 3724856368376648604, guid: b32ca79dc4d9df84c8d476f12f57bf5e,
-    type: 3}
   ParticleManager: {fileID: 1875201444}
   ViePacMan: {fileID: 7411245835877911158, guid: 23d53111c36a1aa40ac46c6f124ed67f,
     type: 3}
+  fruit: {fileID: 7846033679863770804, guid: 34066458b56c0fd409daf68ad3990157, type: 3}
   level: {fileID: 2066316457}
   CercleProgres: {fileID: 845428411}
   _progressionMax: 200
   _progression: 0
   UIGameOver: {fileID: 1533198628}
-  _test: 0
 --- !u!4 &406499301
 Transform:
   m_ObjectHideFlags: 0
