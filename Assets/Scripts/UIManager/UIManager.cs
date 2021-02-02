@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
 
 
     [Header("affichage de la Vie")]
+    [SerializeField] private ParticleManager ParticleManager;
+
     [SerializeField] private GameObject ViePacMan;
     private List<GameObject> Pv = new List<GameObject>();
 
@@ -46,16 +48,9 @@ public class UIManager : MonoBehaviour
 
 
     //=========================Il sert pour le Debug 
-    private void Update()
+    /*private void Update()
     {
-        UpdateProgression();
-
-        if (_test == true)
-        {
-            Debug.Log("Toucher :" + Touch());
-            _test = false;
-        }
-    }
+    }*/
 
     //=========================Système d'adition de point    
     public string AddPoint(int score)
@@ -73,9 +68,9 @@ public class UIManager : MonoBehaviour
     }
 
     //=========================Gestion des textes
-    public void FloatingText(GameObject instiator, string content, Color couleur)
+    public void FloatingText(Transform instiator, string content, Color couleur)
     {
-        var text = Instantiate(TexteVolant, instiator.transform.position, Quaternion.identity, transform);
+        var text = Instantiate(TexteVolant, instiator.position, Quaternion.identity, transform);
         text.GetComponent<TextMesh>().text = content;
         text.GetComponent<TextMesh>().color = couleur;
     }
@@ -99,6 +94,7 @@ public class UIManager : MonoBehaviour
     {
         if (Pv.Count > 0)
         {
+            ParticleManager.ParticulePacMan(Pv[Pv.Count - 1].transform);
             Destroy(Pv[Pv.Count - 1]);
             Pv.RemoveAt(Pv.Count - 1);
             DestroyFruits();

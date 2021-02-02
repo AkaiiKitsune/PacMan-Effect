@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleCercleEffect : MonoBehaviour
+public class ParticleManager : MonoBehaviour
 {
-    
+    [Header("Cercles de Particule")]
     [SerializeField] ParticleSystem PartSysCercle;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    [Header("Désintégration PacMan")]
+    [SerializeField] ParticleSystem PartSysPacMan;
+
+    public void ParticulePacMan(Transform pPacMan)
     {
-        
+        ParticleSystem part = Instantiate(PartSysPacMan);
+        part.transform.localPosition = new Vector3(pPacMan.position.x, pPacMan.position.y, pPacMan.position.z);
+        part.transform.parent = this.transform;
     }
 
     public void TriggerInstantiateCircle(int index)
@@ -25,3 +24,4 @@ public class ParticleCercleEffect : MonoBehaviour
         part.transform.parent = this.transform;
     }
 }
+
