@@ -130,7 +130,15 @@ public class GameManager : MonoBehaviour
             // Debug.Log("TICK : " + Time.time);
             if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Frighten;
             //Check if pacman collide an ennemy
-            foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
+            foreach (GhostBehavior ghost in ghostPrefabs)
+            {
+                ghost.ComputeNextMove(CurrentMode);
+                if( ghost.position == pacman.position)
+                {
+                    pacman.colliding = true;
+                }
+            }
+
 
             if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
             {
