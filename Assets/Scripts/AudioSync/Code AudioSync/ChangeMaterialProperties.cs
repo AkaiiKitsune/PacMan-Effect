@@ -10,6 +10,7 @@ public class ChangeMaterialProperties : MonoBehaviour
 
     [SerializeField] private float fadeSpeed = 0.05F;
     private float fade = 0;
+    Color colorToDisplay = Color.white * 2;
 
     // équivalent d'un constructeur
     void Awake()
@@ -22,16 +23,22 @@ public class ChangeMaterialProperties : MonoBehaviour
     void Update()
     {
         fade -= fadeSpeed;
-        Color whiteColor = Color.white * 2;
-        objectMaterial.SetColor("_BaseColor", Color.Lerp(originalEmissionColor, whiteColor, fade));
+        objectMaterial.SetColor("_BaseColor", Color.Lerp(originalEmissionColor, colorToDisplay, fade));
     }
 
     //Permet de changer la couleur en blanc quand on appele la fonction
     public void GoWhite()
     {
-        
-        Color whiteColor = Color.white * 2;
-        objectMaterial.SetColor("_BaseColor", whiteColor);
+
+        colorToDisplay = Color.white * 2;
+        objectMaterial.SetColor("_BaseColor", colorToDisplay);
+        fade = 1;
+    }
+
+    public void GoDark()
+    {
+        colorToDisplay = Color.black;
+        objectMaterial.SetColor("_BaseColor", colorToDisplay);
         fade = 1;
     }
 }

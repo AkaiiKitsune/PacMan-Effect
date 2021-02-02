@@ -7,7 +7,6 @@ using UnityEngine.XR;
 public class GameManager : MonoBehaviour
 {
     [Header("Settings")]
-    public float startOffset = 1f;
     public float timeTillUpdate = 0.5f;
     public float timeTillSpawn = 3f;
     [SerializeField] public int pacmanLife = 3;
@@ -28,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isGame = false;
     private InputDevice device;
     private Vector2 inputStick;
+    public bool triggerUpdate = false;
 
     [Header("Chase Pattern")]
     private ChaseMode CurrentMode;
@@ -127,18 +127,13 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateGameLogic()
     {
-        yield return new WaitForSecondsRealtime(startOffset);
-
         while (isGame)
         {
             //Gameloop and update logic
-           // Debug.Log("TICK : " + Time.time);
-
-            //Update Pacman
-            pacman.Move(currDirection);
+            // Debug.Log("TICK : " + Time.time);
 
             //Check if pacman collide an ennemy
-                foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
+            foreach (GhostBehavior ghost in ghostPrefabs) ghost.ComputeNextMove(CurrentMode);
 
             if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
             {
@@ -160,12 +155,19 @@ public class GameManager : MonoBehaviour
                 score.SaveScore();
                 UIManager.GameOver();
             }
-                   
-                
+
+            //Update Pacman
+            pacman.Move(currDirection);
+
 
 
             //Wait timeTillUpdate seconds till next update cycle
-            yield return new WaitForSecondsRealtime(timeTillUpdate);
+            while (triggerUpdate == false)
+            {
+                yield return null;
+            }
+
+            triggerUpdate = false;
         }
     }
 
@@ -203,4 +205,9 @@ public class GameManager : MonoBehaviour
 
     }
     #endregion
+
+    public void Trigger(bool trigger)
+    {
+        triggerUpdate = trigger;
+    }
 }
