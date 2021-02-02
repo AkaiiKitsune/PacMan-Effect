@@ -131,7 +131,11 @@ public class GameManager : MonoBehaviour
         {
             //Gameloop and update logic
             // Debug.Log("TICK : " + Time.time);
-            if (power.IsPacmanSuper()) CurrentMode = ChaseMode.Frighten;
+            if (power.IsPacmanSuper())
+            {
+                AudioManager.PlaySound("fuite");
+                CurrentMode = ChaseMode.Frighten;
+            }
             //Check if pacman collide an ennemy
             foreach (GhostBehavior ghost in ghostPrefabs)
             {
@@ -145,6 +149,7 @@ public class GameManager : MonoBehaviour
 
             if (pacman.colliding && pacmanLife > 0 && !power.IsPacmanSuper())
             {
+                AudioManager.PlaySound("death");
                 pacman.colliding = false;
                 pacman.lastDir = MoveDir.Up;
                 pacmanLife -= 1;
@@ -168,10 +173,12 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 closest.Spawn();
+                AudioManager.PlaySound("chomp");
             }
             else if (pacman.colliding && pacmanLife == 0)
             {
                 pacman.colliding = false;
+                AudioManager.PlaySound("death");
                 score.SaveScore();
                 UIManager.GameOver();
             }
@@ -224,11 +231,10 @@ public class GameManager : MonoBehaviour
             CurrentMode = ChaseMode.Chase; //Whatever the last mode in the array was, defaults to chase till player either dies or level ends
 
             while (!power.IsPacmanSuper()) yield return null;//Fix : Eating supers sometimes prevented ghosts to switch back to chase mode, this avoids that scenario
-            while (power.IsPacmanSuper()) yield return null; 
+            while (power.IsPacmanSuper()) yield return null;
 
-            yield return new WaitForEndOfFrame(); 
+            yield return new WaitForEndOfFrame();
         }
-
     }
     #endregion
 
