@@ -3565,7 +3565,7 @@ MonoBehaviour:
   - {fileID: 4019248449540629614, guid: a06a28bc49816dc4caa38b4a18bdbd35, type: 3}
   - {fileID: 4631655885302041404, guid: 5b76e0f9a02a7494bbf65d59b1ece1eb, type: 3}
   - {fileID: 6155894026123569664, guid: 3446eb6f48209c140a3b04794314db8b, type: 3}
-  - {fileID: 7673717043206875398, guid: 34066458b56c0fd409daf68ad3990157, type: 3}
+  - {fileID: 7469614308489933838, guid: 34066458b56c0fd409daf68ad3990157, type: 3}
   pacmanSpawn: {x: 0, y: 0}
 --- !u!114 &2066316459
 MonoBehaviour:

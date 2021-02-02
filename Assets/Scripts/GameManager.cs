@@ -80,9 +80,9 @@ public class GameManager : MonoBehaviour
         {
             ghostPrefabs[i] = Instantiate(ghostPrefabs[i], levels[defaultSpawn].transform);
             ghostPrefabs[i].name = ghostPrefabs[i].type.ToString();
-            ghostPrefabs[i].transform.localPosition = new Vector3(ghostPrefabs[i].transform.localPosition.x, ghostPrefabs[i].transform.localPosition.y, ghostPrefabs[i].transform.localPosition.z - 1);
+            ghostPrefabs[i].transform.localPosition = new Vector3(ghostPrefabs[i].transform.localPosition.x, ghostPrefabs[i].transform.localPosition.y, ghostPrefabs[i].transform.localPosition.z - 1f);
             ghostPrefabs[i].target = pacman;
-
+            ghostPrefabs[i].gameObject.transform.Rotate(-90.0f, 0.0f, 0.0f);
             //Init pacman spawn coordinates
             ghostPrefabs[i].level = levels[defaultSpawn];
             ghostPrefabs[i].Spawn();
