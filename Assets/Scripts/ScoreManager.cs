@@ -24,6 +24,15 @@ public class ScoreManager : MonoBehaviour
         UIManager.SetProgressionMax();
     }
 
+    public void KeepScore ()
+    {
+        highScore = PlayerPrefs.GetInt("HighScore");
+        score = PlayerPrefs.GetInt("KeepScore");
+        UIManager.TextScore.text = UIManager.AddPoint(score);
+        UIManager.TextHighScore.text = UIManager.AddPoint(highScore);
+        UIManager.SetProgressionMax();
+    }
+
     public void AddScore (TileType type, Transform PacMan)
     {
         
@@ -61,6 +70,11 @@ public class ScoreManager : MonoBehaviour
     public void SaveScore()
     {
         PlayerPrefs.SetInt("HighScore", highScore);
+    }
+
+    public void SaveScoreWin()
+    {
+        PlayerPrefs.SetInt("KeepScore", score);
     }
 
     public int ShowScore () => score;

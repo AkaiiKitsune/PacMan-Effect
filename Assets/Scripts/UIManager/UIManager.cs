@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject UIGameOver;
     [SerializeField] private GameObject UIWin;
 
+    [SerializeField] private int pacmanState;
 
 
     //=========================Il sert pour le Debug 
@@ -192,7 +193,11 @@ public class UIManager : MonoBehaviour
 
         if (_progression >= _progressionMax) {
             UIWin.SetActive(true);
-            StartCoroutine(LoadDelay());
+            pacmanState = 1;
+            ScoreManager.SaveScoreWin();
+            PlayerPrefs.SetInt("PacmanWon", pacmanState);
+
+            SceneManager.LoadScene("Pacman Parsed");
         }
     }
     #endregion
@@ -200,6 +205,8 @@ public class UIManager : MonoBehaviour
     //=========================Affichage du game over
     public void GameOver()
     {
+        pacmanState = 0;
+        PlayerPrefs.SetInt("PacmanWon", pacmanState);
         UIGameOver.SetActive(true);
         StartCoroutine(LoadDelay());
     }
@@ -209,5 +216,11 @@ public class UIManager : MonoBehaviour
         GameManager.isGame = false;
         yield return new WaitForSecondsRealtime(3f);
         SceneManager.LoadScene("Menu");
+    }
+
+    public int PacmanWon ()
+    {
+        pacmanState = PlayerPrefs.GetInt("PacmanWon");
+        return pacmanState;
     }
 }

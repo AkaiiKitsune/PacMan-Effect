@@ -14,6 +14,7 @@ public class MenuNav : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefs.SetInt("KeepScore", 0);
         device = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
     }
 
@@ -51,6 +52,7 @@ public class MenuNav : MonoBehaviour
         {
             if (index == 1)
             {
+
                 SceneManager.LoadScene("Pacman Parsed");
 
 

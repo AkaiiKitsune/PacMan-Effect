@@ -54,9 +54,10 @@ public class GameManager : MonoBehaviour
 
         InitPacman();
         InitGhosts();
-        score.InitScore();
         StartGame();
         UIManager.InitShowPV(pacmanLife);
+        if (UIManager.PacmanWon() == 0) score.InitScore();
+        else if (UIManager.PacmanWon() == 1) score.KeepScore();
     }
 
     void InitPacman()
