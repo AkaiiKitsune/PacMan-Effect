@@ -300,7 +300,7 @@ MonoBehaviour:
   TextHighScore: {fileID: 1361860509}
   ScoreManager: {fileID: 1904630988}
   ParticleManager: {fileID: 1875201444}
-  ViePacMan: {fileID: 7411245835877911158, guid: 23d53111c36a1aa40ac46c6f124ed67f,
+  ViePacMan: {fileID: 6053480881683106550, guid: 424188db310a0684199fdbd1396266b0,
     type: 3}
   fruit: {fileID: 7846033679863770804, guid: 34066458b56c0fd409daf68ad3990157, type: 3}
   level: {fileID: 2066316457}
@@ -3024,7 +3024,7 @@ MonoBehaviour:
   timeTillUpdate: 0.3
   timeTillSpawn: 10
   pacmanLife: 3
-  pacman: {fileID: 5802738516424366717, guid: 23d53111c36a1aa40ac46c6f124ed67f, type: 3}
+  pacman: {fileID: 8365609937878566903, guid: fcd62fd5d3be0c54981333a7053847c7, type: 3}
   ghostPrefabs:
   - {fileID: 2678174848568332790, guid: 61c9d33c9ec35bb47aa29a738c7e044d, type: 3}
   - {fileID: 3914003140405220502, guid: 15beb248ba234b645aa9d3d1ec5037df, type: 3}
