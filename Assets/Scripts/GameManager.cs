@@ -42,15 +42,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private UIManager UIManager;
 
     #region Initialisation
-    private void Awake()
+    private void Start()
     {
         //Level Generation and Level Display logic
         foreach (LevelParser level in levels) level.InitLevel();
         foreach (LevelDisplayer displayer in levelDisplayers) displayer.DisplayLevel();
-    }
 
-    private void Start()
-    {
         device = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
 
         InitPacman();

@@ -127,7 +127,7 @@ public class PacmanBehavior : MonoBehaviour
     IEnumerator Death()
     {
 
-        yield return new WaitForSecondsRealtime(WaitForEndOfFrame);
+        yield return new WaitForEndOfFrame();
     }
 
     /// TODO Implement this hell
